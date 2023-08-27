@@ -8,7 +8,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: '',
-      favicon: './src/images/icon.svg',
+      //  favicon: './src/images/icon.svg',
     }),
   ],
   output: {
