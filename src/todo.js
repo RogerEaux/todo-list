@@ -1,10 +1,22 @@
 const createTodo = (title, description, dueDate, priority) => {
-  const checkTodo = function () {
-    this.check = true;
+  const changeTitle = function (newTitle) {
+    this.title = newTitle;
   };
 
-  const changePiority = function (newPriority) {
+  const changeDescription = function (newDescription) {
+    this.description = newDescription;
+  };
+
+  const changeDueDate = function (newDueDate) {
+    this.dueDate = newDueDate;
+  };
+
+  const changePriority = function (newPriority) {
     this.priority = newPriority;
+  };
+
+  const checkTodo = function () {
+    this.check = true;
   };
 
   return {
@@ -13,9 +25,12 @@ const createTodo = (title, description, dueDate, priority) => {
     dueDate,
     priority,
     check: false,
+    changeTitle,
+    changeDescription,
+    changeDueDate,
+    changePriority,
     checkTodo,
-    changePiority,
   };
 };
 
-export default createTodo;
+// export default createTodo;
