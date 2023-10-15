@@ -1,5 +1,5 @@
 import '../style.css';
-import checkmark from '../images/checkmark.png';
+import checkmark from '../images/done.svg';
 
 const createTop = () => {
   const top = document.createElement('header');
