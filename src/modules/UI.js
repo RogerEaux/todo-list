@@ -1,10 +1,15 @@
 import '../style.css';
+import checkmark from '../images/checkmark.png';
 
 const createTop = () => {
   const top = document.createElement('header');
   const logo = document.createElement('img');
   const logoTitle = document.createElement('p');
   const logoContainer = document.createElement('div');
+
+  logoTitle.textContent = 'Todo or not todo';
+  logo.src = checkmark;
+  logo.alt = 'Green chekmark';
 
   logoContainer.appendChild(logo);
   logoContainer.appendChild(logoTitle);
