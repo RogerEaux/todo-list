@@ -13,3 +13,13 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+main {
+  flex: 1;
+}
+
+footer {
+  display: flex;
+  padding: 8px;
+  justify-content: center;
+}
