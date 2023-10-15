@@ -1,6 +1,5 @@
-const createTodo = (title, description, dueDate, priority) => {
+const createTodo = (title, dueDate, priority) => {
   let todoTitle = title;
-  let todoDescription = description;
   let todoDueDate = dueDate;
   let todoPriority = priority;
   let todoCompleted = false;
@@ -12,14 +11,6 @@ const createTodo = (title, description, dueDate, priority) => {
 
     set title(title) {
       todoTitle = title;
-    },
-
-    get description() {
-      return todoDescription;
-    },
-
-    set description(description) {
-      todoDescription = description;
     },
 
     get dueDate() {
