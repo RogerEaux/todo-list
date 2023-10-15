@@ -7,7 +7,7 @@ module.exports = {
   devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      title: '',
+      title: 'Todo',
       //  favicon: './src/images/icon.svg',
     }),
   ],

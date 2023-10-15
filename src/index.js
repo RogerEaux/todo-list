@@ -1,3 +1,5 @@
-import createContent from './initial-load';
+import createContent from './modules/UI';
+import createTodoList from './modules/main-logic';
 
 createContent();
+createTodoList();
