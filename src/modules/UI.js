@@ -7,9 +7,11 @@ const createTop = () => {
   const logoTitle = document.createElement('p');
   const logoContainer = document.createElement('div');
 
-  logoTitle.textContent = 'Todo or not todo';
+  top.classList.add('header');
+  logoTitle.textContent = 'Do a thing';
+  logoContainer.classList.add('logo-container');
   logo.src = checkmark;
-  logo.alt = 'Green chekmark';
+  logo.alt = 'Two checkmarks';
 
   logoContainer.appendChild(logo);
   logoContainer.appendChild(logoTitle);
@@ -26,6 +28,8 @@ const createSide = () => {
 
 const createMain = () => {
   const main = document.createElement('main');
+
+  main.classList.add('main');
   main.appendChild(createSide());
 
   return main;
