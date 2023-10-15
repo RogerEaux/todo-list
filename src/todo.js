@@ -1,36 +1,42 @@
 const createTodo = (title, description, dueDate, priority) => {
-  const changeTitle = function (newTitle) {
-    this.title = newTitle;
-  };
-
-  const changeDescription = function (newDescription) {
-    this.description = newDescription;
-  };
-
-  const changeDueDate = function (newDueDate) {
-    this.dueDate = newDueDate;
-  };
-
-  const changePriority = function (newPriority) {
-    this.priority = newPriority;
-  };
-
-  const checkTodo = function () {
-    this.check = true;
-  };
+  let todoTitle = title;
+  let todoDescription = description;
+  let todoDueDate = dueDate;
+  let todoPriority = priority;
 
   return {
-    title,
-    description,
-    dueDate,
-    priority,
-    check: false,
-    changeTitle,
-    changeDescription,
-    changeDueDate,
-    changePriority,
-    checkTodo,
+    get title() {
+      return todoTitle;
+    },
+
+    set title(title) {
+      todoTitle = title;
+    },
+
+    get description() {
+      return todoDescription;
+    },
+
+    set description(description) {
+      todoDescription = description;
+    },
+
+    get dueDate() {
+      return todoDueDate;
+    },
+
+    set dueDate(dueDate) {
+      todoDueDate = dueDate;
+    },
+
+    get priority() {
+      return todoPriority;
+    },
+
+    set priority(priority) {
+      todoPriority = priority;
+    },
   };
 };
 
-// export default createTodo;
+export default createTodo;
