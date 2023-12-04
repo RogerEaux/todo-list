@@ -1,5 +1,5 @@
 const createTodo = (title, dueDate, priority) => {
-  let todoTitle = title;
+  let todoTitle = title.replace(' ', '-').toLowerCase();
   let todoDueDate = dueDate;
   let todoPriority = priority;
   let todoCompleted = false;
