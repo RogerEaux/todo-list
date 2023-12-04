@@ -1,13 +1,13 @@
 import createProject from './project';
 
 const createTodoList = () => {
-  const listProjects = [];
+  const todoProjects = [];
 
-  listProjects.push(createProject('Inbox'));
+  todoProjects.push(createProject('Inbox'));
 
   return {
     get projects() {
-      return listProjects;
+      return todoProjects;
     },
   };
 };

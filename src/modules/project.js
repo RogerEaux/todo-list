@@ -1,11 +1,8 @@
 import createTodo from './todo';
 
 const createProject = (name) => {
-  let projectName = name.replace(' ', '-').toLowerCase();
-  const projectTodos = [
-    createTodo('Smile', 'Today', 0),
-    createTodo('Pet dog', 'Now', 0),
-  ];
+  let projectName = name;
+  const projectTodos = [createTodo('Smile', 'Today', 0)];
 
   const addTodo = (todo) => {
     projectTodos.push(todo);
