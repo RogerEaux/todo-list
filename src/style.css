@@ -51,6 +51,32 @@ body,
   flex: 1;
 }
 
+.task-container {
+  height: 64px;
+  width: 128px;
+  display: grid;
+  grid-template:
+    'input title' 1fr
+    'input due' 1fr / min-content 1fr;
+  align-items: center;
+  gap: 16px;
+  margin: 16px;
+  border: 2px ridge var(--gray);
+  padding: 16px;
+}
+
+.task-container > input {
+  grid-area: input;
+}
+
+.task-container > label {
+  grid-area: title;
+}
+
+.task-container > p {
+  grid-area: due;
+}
+
 .footer {
   padding: 16px;
   justify-content: center;
