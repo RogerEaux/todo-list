@@ -1,14 +1,14 @@
-import createTodo from './todo';
+import createTask from './task';
 
 const createProject = (name) => {
   let projectName = name;
-  const projectTodos = [
-    createTodo('Smile', 'Today', 0),
-    createTodo('Pet dog', 'Now', 0),
+  const projectTasks = [
+    createTask('Smile', 'Today', 0),
+    createTask('Pet dog', 'Now', 0),
   ];
 
-  const addTodo = (todo) => {
-    projectTodos.push(todo);
+  const addTask = (task) => {
+    projectTasks.push(task);
   };
 
   return {
@@ -20,11 +20,11 @@ const createProject = (name) => {
       projectName = name;
     },
 
-    get todos() {
-      return projectTodos;
+    get tasks() {
+      return projectTasks;
     },
 
-    addTodo,
+    addTask,
   };
 };
 

@@ -1,6 +1,6 @@
 import '../style.css';
 import checkmark from '../images/done.svg';
-import createTodoList from './todoList';
+import createTaskList from './taskList';
 
 const createTop = () => {
   const top = document.createElement('header');
@@ -27,15 +27,15 @@ const createSide = () => {
   return side;
 };
 
-const createTodoContainer = (title, dueDate) => {
-  const todoContainer = document.createElement('div');
+const createTaskContainer = (title, dueDate) => {
+  const taskContainer = document.createElement('div');
   const taskCompleted = document.createElement('input');
   const taskTitle = document.createElement('label');
   const taskDueDate = document.createElement('p');
   const formatTitle = title.replace(' ', '-').toLowerCase();
 
-  todoContainer.classList.add('task-container');
-  todoContainer.setAttribute('id', formatTitle);
+  taskContainer.classList.add('task-container');
+  taskContainer.setAttribute('id', formatTitle);
   taskCompleted.setAttribute('type', 'checkbox');
   taskCompleted.setAttribute('name', 'checkbox');
   taskCompleted.setAttribute('id', formatTitle.concat('-input'));
@@ -45,18 +45,20 @@ const createTodoContainer = (title, dueDate) => {
   taskTitle.textContent = title;
   taskDueDate.textContent = dueDate;
 
-  todoContainer.appendChild(taskCompleted);
-  todoContainer.appendChild(taskTitle);
-  todoContainer.appendChild(taskDueDate);
+  taskContainer.appendChild(taskCompleted);
+  taskContainer.appendChild(taskTitle);
+  taskContainer.appendChild(taskDueDate);
 
-  return todoContainer;
+  return taskContainer;
 };
 
 const createMain = () => {
   const main = document.createElement('main');
-  const todoList = createTodoList();
+  const taskList = createTaskList();
 
-  todoList.projects.forEach((project) => {
+  main.appendChild(createSide());
+
+  taskList.projects.forEach((project) => {
     const projectContainer = document.createElement('div');
     projectContainer.classList.add('project-container');
     projectContainer.setAttribute(
@@ -64,18 +66,17 @@ const createMain = () => {
       project.name.replace(' ', '-').toLowerCase(),
     );
 
-    project.todos.forEach((todo) => {
-      const title = todo.title;
-      const dueDate = todo.dueDate;
-      const todoContainer = createTodoContainer(title, dueDate);
+    project.tasks.forEach((task) => {
+      const title = task.title;
+      const dueDate = task.dueDate;
+      const taskContainer = createTaskContainer(title, dueDate);
 
-      projectContainer.appendChild(todoContainer);
+      projectContainer.appendChild(taskContainer);
     });
     main.appendChild(projectContainer);
   });
 
   main.classList.add('main');
-  main.appendChild(createSide());
 
   return main;
 };
