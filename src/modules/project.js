@@ -2,7 +2,10 @@ import createTodo from './todo';
 
 const createProject = (name) => {
   let projectName = name;
-  const projectTodos = [createTodo('Smile', 'Today', 0)];
+  const projectTodos = [
+    createTodo('Smile', 'Today', 0),
+    createTodo('Pet dog', 'Now', 0),
+  ];
 
   const addTodo = (todo) => {
     projectTodos.push(todo);

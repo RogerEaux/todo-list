@@ -32,14 +32,15 @@ const createTodoContainer = (title, dueDate) => {
   const taskCompleted = document.createElement('input');
   const taskTitle = document.createElement('label');
   const taskDueDate = document.createElement('p');
+  const formatTitle = title.replace(' ', '-').toLowerCase();
 
   todoContainer.classList.add('task-container');
-  todoContainer.setAttribute('id', title);
+  todoContainer.setAttribute('id', formatTitle);
   taskCompleted.setAttribute('type', 'checkbox');
   taskCompleted.setAttribute('name', 'checkbox');
-  taskCompleted.setAttribute('id', title);
+  taskCompleted.setAttribute('id', formatTitle.concat('-input'));
   taskCompleted.classList.add('checkbox-field');
-  taskTitle.setAttribute('for', title);
+  taskTitle.setAttribute('for', formatTitle.concat('-input'));
   taskTitle.classList.add('checkbox-label');
   taskTitle.textContent = title;
   taskDueDate.textContent = dueDate;
@@ -58,7 +59,10 @@ const createMain = () => {
   todoList.projects.forEach((project) => {
     const projectContainer = document.createElement('div');
     projectContainer.classList.add('project-container');
-    projectContainer.setAttribute('id', project.name);
+    projectContainer.setAttribute(
+      'id',
+      project.name.replace(' ', '-').toLowerCase(),
+    );
 
     project.todos.forEach((todo) => {
       const title = todo.title;
