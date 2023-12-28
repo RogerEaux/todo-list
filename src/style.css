@@ -21,7 +21,7 @@ body {
 
 .header {
   display: grid;
-  grid-template-columns: 256px 1fr;
+  grid-template-columns: 16rem 1fr;
   box-shadow: var(--shadow);
 }
 
@@ -49,12 +49,17 @@ body {
 .main {
   flex: 1;
   display: grid;
-  grid-template-columns: 256px 1fr;
+  grid-template-columns: 16rem 1fr;
 }
 
 .project-container {
   display: flex;
   flex-direction: column;
+  padding: 16px;
+}
+
+.project-container > p {
+  padding: 16px;
 }
 
 .task-container {
