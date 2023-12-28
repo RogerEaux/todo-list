@@ -1,6 +1,6 @@
 import '../style.css';
 import checkmark from '../images/done.svg';
-import createTaskList from './taskList';
+import getTaskList from './taskList';
 
 const createTop = () => {
   const top = document.createElement('header');
@@ -27,14 +27,17 @@ const createSide = () => {
   return side;
 };
 
-const createTaskContainer = (title, dueDate) => {
+const createTaskContainer = (project, title, dueDate) => {
   const taskContainer = document.createElement('div');
   const taskCheckboxContainer = document.createElement('div');
   const taskCompleted = document.createElement('input');
   const taskLabel = document.createElement('label');
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
-  const formatTitle = title.replace(' ', '-').toLowerCase();
+  const formatTitle = project.concat(
+    '-',
+    title.replace(' ', '-').toLowerCase(),
+  );
 
   taskContainer.classList.add('task-container');
   taskContainer.setAttribute('id', formatTitle);
@@ -61,28 +64,35 @@ const createTaskContainer = (title, dueDate) => {
 
 const createMain = () => {
   const main = document.createElement('main');
-  const taskList = createTaskList();
+  const allTasks = document.createElement('div');
+  const taskList = getTaskList().taskList;
 
   main.appendChild(createSide());
 
   taskList.projects.forEach((project) => {
     const projectContainer = document.createElement('div');
+    const projectTitle = document.createElement('p');
+    const formatTitle = project.title.replace(' ', '-').toLowerCase();
+
     projectContainer.classList.add('project-container');
-    projectContainer.setAttribute(
-      'id',
-      project.name.replace(' ', '-').toLowerCase(),
-    );
+    projectContainer.setAttribute('id', formatTitle);
+    projectTitle.textContent = project.title;
+    projectContainer.appendChild(projectTitle);
 
     project.tasks.forEach((task) => {
-      const title = task.title;
-      const dueDate = task.dueDate;
-      const taskContainer = createTaskContainer(title, dueDate);
+      const taskContainer = createTaskContainer(
+        formatTitle,
+        task.title,
+        task.dueDate,
+      );
 
       projectContainer.appendChild(taskContainer);
     });
-    main.appendChild(projectContainer);
+    allTasks.appendChild(projectContainer);
   });
 
+  allTasks.classList.add('all-tasks');
+  main.appendChild(allTasks);
   main.classList.add('main');
 
   return main;
