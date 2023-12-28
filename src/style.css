@@ -15,14 +15,13 @@ body {
   flex-direction: column;
 }
 
-body,
-.footer {
+body {
   display: flex;
 }
 
 .header {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 256px 1fr;
   box-shadow: var(--shadow);
 }
 
@@ -49,35 +48,62 @@ body,
 
 .main {
   flex: 1;
+  display: grid;
+  grid-template-columns: 256px 1fr;
+}
+
+.project-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .task-container {
-  height: 64px;
-  width: 128px;
   display: grid;
   grid-template:
     'input title' 1fr
-    'input due' 1fr / min-content 1fr;
+    'none due' 1fr / 1.5rem 1fr;
   align-items: center;
-  gap: 16px;
-  margin: 16px;
-  border: 2px ridge var(--gray);
-  padding: 16px;
+  padding: 8px;
 }
 
-.task-container > input {
-  grid-area: input;
-}
-
-.task-container > label {
+.task-container .task-title {
   grid-area: title;
+  font-size: 1rem;
 }
 
-.task-container > p {
+.task-container .task-due {
   grid-area: due;
+  font-size: 0.7rem;
+}
+
+.checkbox-container {
+  grid-area: input;
+  position: relative;
+}
+
+.checkbox-container label {
+  background-color: #fff;
+  border: 2px solid violet;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 1.1rem;
+  width: 1.1rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.checkbox-container input[type='checkbox'] {
+  visibility: hidden;
+}
+
+.checkbox-container input[type='checkbox']:checked + label {
+  background-color: #66bb6a;
+  border-color: #66bb6a;
 }
 
 .footer {
+  display: flex;
   padding: 16px;
   justify-content: center;
 }
