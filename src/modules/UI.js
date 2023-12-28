@@ -64,12 +64,26 @@ const createTaskContainer = (project, title, dueDate) => {
 
 const createMain = () => {
   const main = document.createElement('main');
+  const currentProject = getTaskList().currentProject;
   const allTasks = document.createElement('div');
   const taskList = getTaskList().taskList;
+  const defaultProjects = ['Inbox', 'Today'];
+  let dueDate;
 
   main.appendChild(createSide());
 
+  if (currentProject === 'Today') {
+    dueDate = 'Today';
+  }
+
   taskList.projects.forEach((project) => {
+    if (
+      !defaultProjects.includes(currentProject) &&
+      currentProject !== project
+    ) {
+      return;
+    }
+
     const projectContainer = document.createElement('div');
     const projectTitle = document.createElement('p');
     const formatTitle = project.title.replace(' ', '-').toLowerCase();
@@ -80,6 +94,10 @@ const createMain = () => {
     projectContainer.appendChild(projectTitle);
 
     project.tasks.forEach((task) => {
+      if (currentProject === 'Today' && task.dueDate !== dueDate) {
+        return;
+      }
+
       const taskContainer = createTaskContainer(
         formatTitle,
         task.title,
@@ -88,7 +106,9 @@ const createMain = () => {
 
       projectContainer.appendChild(taskContainer);
     });
-    allTasks.appendChild(projectContainer);
+    if (projectContainer.querySelector('.task-container')) {
+      allTasks.appendChild(projectContainer);
+    }
   });
 
   allTasks.classList.add('all-tasks');
