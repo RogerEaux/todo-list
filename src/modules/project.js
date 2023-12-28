@@ -1,7 +1,7 @@
 import createTask from './task';
 
-const createProject = (name) => {
-  let projectName = name;
+const createProject = (title) => {
+  let projectTitle = title;
   const projectTasks = [
     createTask('Smile', 'Today', 0),
     createTask('Pet dog', 'Now', 0),
@@ -12,12 +12,12 @@ const createProject = (name) => {
   };
 
   return {
-    get name() {
-      return projectName;
+    get title() {
+      return projectTitle;
     },
 
-    set name(name) {
-      projectName = name;
+    set title(title) {
+      projectTitle = title;
     },
 
     get tasks() {
