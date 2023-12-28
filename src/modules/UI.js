@@ -29,23 +29,30 @@ const createSide = () => {
 
 const createTaskContainer = (title, dueDate) => {
   const taskContainer = document.createElement('div');
+  const taskCheckboxContainer = document.createElement('div');
   const taskCompleted = document.createElement('input');
-  const taskTitle = document.createElement('label');
+  const taskLabel = document.createElement('label');
+  const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
   const formatTitle = title.replace(' ', '-').toLowerCase();
 
   taskContainer.classList.add('task-container');
   taskContainer.setAttribute('id', formatTitle);
+  taskCheckboxContainer.classList.add('checkbox-container');
   taskCompleted.setAttribute('type', 'checkbox');
   taskCompleted.setAttribute('name', 'checkbox');
   taskCompleted.setAttribute('id', formatTitle.concat('-input'));
   taskCompleted.classList.add('checkbox-field');
-  taskTitle.setAttribute('for', formatTitle.concat('-input'));
-  taskTitle.classList.add('checkbox-label');
+  taskLabel.setAttribute('for', formatTitle.concat('-input'));
+  taskLabel.classList.add('checkbox-label');
   taskTitle.textContent = title;
+  taskTitle.classList.add('task-title');
   taskDueDate.textContent = dueDate;
+  taskDueDate.classList.add('task-due');
 
-  taskContainer.appendChild(taskCompleted);
+  taskCheckboxContainer.appendChild(taskCompleted);
+  taskCheckboxContainer.appendChild(taskLabel);
+  taskContainer.appendChild(taskCheckboxContainer);
   taskContainer.appendChild(taskTitle);
   taskContainer.appendChild(taskDueDate);
 
