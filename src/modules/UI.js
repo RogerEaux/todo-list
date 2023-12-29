@@ -87,6 +87,7 @@ const createMain = () => {
     const projectContainer = document.createElement('div');
     const projectTitle = document.createElement('p');
     const formatTitle = project.title.replace(' ', '-').toLowerCase();
+    const addTask = document.createElement('button');
 
     projectContainer.classList.add('project-container');
     projectContainer.setAttribute('id', formatTitle);
@@ -106,6 +107,11 @@ const createMain = () => {
 
       projectContainer.appendChild(taskContainer);
     });
+
+    addTask.classList.add('add-task');
+    addTask.textContent = '＋ Add task';
+    projectContainer.appendChild(addTask);
+
     if (projectContainer.querySelector('.task-container')) {
       allTasks.appendChild(projectContainer);
     }
