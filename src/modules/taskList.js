@@ -13,23 +13,21 @@ const createTaskList = () => {
   };
 };
 
-const getTaskList = () => {
-  const taskList = createTaskList();
-  let currentProject = 'Inbox';
+const taskList = createTaskList();
+let currentProject = 'Inbox';
 
-  return {
-    get taskList() {
-      return taskList;
-    },
+const getTaskList = () => ({
+  get taskList() {
+    return taskList;
+  },
 
-    get currentProject() {
-      return currentProject;
-    },
+  get currentProject() {
+    return currentProject;
+  },
 
-    set currentProject(project) {
-      currentProject = project;
-    },
-  };
-};
+  set currentProject(project) {
+    currentProject = project;
+  },
+});
 
 export default getTaskList;
