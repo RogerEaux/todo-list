@@ -50,13 +50,27 @@ const handleEditTaskTitle = (taskID) => {
   });
 
   taskTitleInput.addEventListener('keydown', (e) => {
-    if (e.keyCode === 27) {
+    if (e.keyCode === 27 || e.keyCode === 13) {
       taskTitle.setAttribute('style', 'visibility:visible');
       taskTitleInput.setAttribute('onfocus', "value=''");
       taskTitleInput.setAttribute('style', 'visibility:hidden');
-    } else if (e.keyCode === 13) {
-      const taskList = getTaskList();
-      console.log(taskList);
+    }
+    if (e.keyCode === 13) {
+      const taskList = getTaskList().taskList;
+      const allTasksNode = document.querySelector('.all-tasks');
+      const projectEditedNode = document.getElementById(
+        `${taskID.split('--')[0]}`,
+      );
+      const taskEditedNode = document.getElementById(taskID);
+      const projectIndex = Array.from(allTasksNode.children).indexOf(
+        projectEditedNode,
+      );
+      const taskIndex =
+        Array.from(projectEditedNode.children).indexOf(taskEditedNode) - 1;
+      const taskEdited = taskList.projects[projectIndex].tasks[taskIndex];
+
+      taskEdited.title = 'Yeet';
+      taskTitle.textContent = 'Yeet';
     }
   });
 };
@@ -69,7 +83,7 @@ const createTaskContainer = (projectID, title, dueDate) => {
   const taskTitleInput = document.createElement('input');
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
-  const taskID = `${projectID}-${formatTitle(title)}`;
+  const taskID = `${projectID}--${formatTitle(title)}`;
 
   taskContainer.classList.add('task-container');
   taskContainer.setAttribute('id', taskID);
