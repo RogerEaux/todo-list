@@ -28,34 +28,69 @@ const createSide = () => {
   return side;
 };
 
-const formatTitle = (title) => title.replace(' ', '-').toLowerCase();
+const formatTitle = (title) => title.replaceAll(' ', '-').toLowerCase();
 
-const createTaskContainer = (project, title, dueDate) => {
+const handleEditTaskTitle = (taskID) => {
+  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
+  const taskTitleInput = document.querySelector(
+    `#${taskID} > input.task-title`,
+  );
+
+  taskTitle.setAttribute('style', 'visibility:hidden');
+  taskTitleInput.setAttribute('style', 'visibility:visible');
+  taskTitleInput.focus();
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest(`#${taskID} > .task-title`)) {
+      return;
+    }
+    taskTitle.setAttribute('style', 'visibility:visible');
+    taskTitleInput.setAttribute('onfocus', "value=''");
+    taskTitleInput.setAttribute('style', 'visibility:hidden');
+  });
+
+  taskTitleInput.addEventListener('keydown', (e) => {
+    if (e.keyCode === 27) {
+      taskTitle.setAttribute('style', 'visibility:visible');
+      taskTitleInput.setAttribute('onfocus', "value=''");
+      taskTitleInput.setAttribute('style', 'visibility:hidden');
+    } else if (e.keyCode === 13) {
+      const taskList = getTaskList();
+      console.log(taskList);
+    }
+  });
+};
+
+const createTaskContainer = (projectID, title, dueDate) => {
   const taskContainer = document.createElement('div');
   const taskCheckboxContainer = document.createElement('div');
   const taskCompleted = document.createElement('input');
   const taskLabel = document.createElement('label');
+  const taskTitleInput = document.createElement('input');
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
-  const formattedTitle = project.concat('-', formatTitle(title));
+  const taskID = `${projectID}-${formatTitle(title)}`;
 
   taskContainer.classList.add('task-container');
-  taskContainer.setAttribute('id', formattedTitle);
+  taskContainer.setAttribute('id', taskID);
   taskCheckboxContainer.classList.add('checkbox-container');
   taskCompleted.setAttribute('type', 'checkbox');
-  taskCompleted.setAttribute('name', 'checkbox');
-  taskCompleted.setAttribute('id', formattedTitle.concat('-input'));
-  taskCompleted.classList.add('checkbox-field');
-  taskLabel.setAttribute('for', formattedTitle.concat('-input'));
-  taskLabel.classList.add('checkbox-label');
+  taskCompleted.setAttribute('id', `${taskID}-input-completed`);
+  taskLabel.setAttribute('for', `${taskID}-input-completed`);
+  taskTitleInput.setAttribute('type', 'text');
+  taskTitleInput.classList.add('task-title');
+  taskTitleInput.setAttribute('style', 'visibility:hidden');
+  taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
   taskTitle.textContent = title;
   taskTitle.classList.add('task-title');
+  taskTitle.addEventListener('click', () => handleEditTaskTitle(taskID));
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
 
   taskCheckboxContainer.appendChild(taskCompleted);
   taskCheckboxContainer.appendChild(taskLabel);
   taskContainer.appendChild(taskCheckboxContainer);
+  taskContainer.appendChild(taskTitleInput);
   taskContainer.appendChild(taskTitle);
   taskContainer.appendChild(taskDueDate);
 
@@ -63,7 +98,8 @@ const createTaskContainer = (project, title, dueDate) => {
 };
 
 const handleAddTask = (project) => {
-  const projectNode = document.getElementById(formatTitle(project.title));
+  const formattedTitle = formatTitle(project.title);
+  const projectNode = document.getElementById(formattedTitle);
 
   const projectTaskTitles = [];
   project.tasks.forEach((task) => {
@@ -77,7 +113,7 @@ const handleAddTask = (project) => {
   }
 
   projectNode.insertBefore(
-    createTaskContainer(project.title, title, 'Today'),
+    createTaskContainer(formattedTitle, title, 'Today'),
     projectNode.lastChild,
   );
   project.addTask(createTask(title, 'Today'));
@@ -107,11 +143,11 @@ const createMain = () => {
 
     const projectContainer = document.createElement('div');
     const projectTitle = document.createElement('p');
-    const formattedTitle = formatTitle(project.title);
+    const projectID = formatTitle(project.title);
     const addTask = document.createElement('button');
 
     projectContainer.classList.add('project-container');
-    projectContainer.setAttribute('id', formattedTitle);
+    projectContainer.setAttribute('id', projectID);
     projectTitle.textContent = project.title;
     projectContainer.appendChild(projectTitle);
 
@@ -121,7 +157,7 @@ const createMain = () => {
       }
 
       const taskContainer = createTaskContainer(
-        formattedTitle,
+        projectID,
         task.title,
         task.dueDate,
       );
