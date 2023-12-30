@@ -1,6 +1,7 @@
 import '../style.css';
 import checkmark from '../images/done.svg';
 import getTaskList from './taskList';
+import createTask from './task';
 
 const createTop = () => {
   const top = document.createElement('header');
@@ -27,6 +28,8 @@ const createSide = () => {
   return side;
 };
 
+const formatTitle = (title) => title.replace(' ', '-').toLowerCase();
+
 const createTaskContainer = (project, title, dueDate) => {
   const taskContainer = document.createElement('div');
   const taskCheckboxContainer = document.createElement('div');
@@ -34,19 +37,16 @@ const createTaskContainer = (project, title, dueDate) => {
   const taskLabel = document.createElement('label');
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
-  const formatTitle = project.concat(
-    '-',
-    title.replace(' ', '-').toLowerCase(),
-  );
+  const formattedTitle = project.concat('-', formatTitle(title));
 
   taskContainer.classList.add('task-container');
-  taskContainer.setAttribute('id', formatTitle);
+  taskContainer.setAttribute('id', formattedTitle);
   taskCheckboxContainer.classList.add('checkbox-container');
   taskCompleted.setAttribute('type', 'checkbox');
   taskCompleted.setAttribute('name', 'checkbox');
-  taskCompleted.setAttribute('id', formatTitle.concat('-input'));
+  taskCompleted.setAttribute('id', formattedTitle.concat('-input'));
   taskCompleted.classList.add('checkbox-field');
-  taskLabel.setAttribute('for', formatTitle.concat('-input'));
+  taskLabel.setAttribute('for', formattedTitle.concat('-input'));
   taskLabel.classList.add('checkbox-label');
   taskTitle.textContent = title;
   taskTitle.classList.add('task-title');
@@ -60,6 +60,27 @@ const createTaskContainer = (project, title, dueDate) => {
   taskContainer.appendChild(taskDueDate);
 
   return taskContainer;
+};
+
+const handleAddTask = (project) => {
+  const projectNode = document.getElementById(formatTitle(project.title));
+
+  const projectTaskTitles = [];
+  project.tasks.forEach((task) => {
+    projectTaskTitles.push(task.title);
+  });
+
+  let title = 'Do the thing';
+
+  while (projectTaskTitles.includes(title)) {
+    title = title.replace('o ', 'oo ');
+  }
+
+  projectNode.insertBefore(
+    createTaskContainer(project.title, title, 'Today'),
+    projectNode.lastChild,
+  );
+  project.addTask(createTask(title, 'Today'));
 };
 
 const createMain = () => {
@@ -86,11 +107,11 @@ const createMain = () => {
 
     const projectContainer = document.createElement('div');
     const projectTitle = document.createElement('p');
-    const formatTitle = project.title.replace(' ', '-').toLowerCase();
+    const formattedTitle = formatTitle(project.title);
     const addTask = document.createElement('button');
 
     projectContainer.classList.add('project-container');
-    projectContainer.setAttribute('id', formatTitle);
+    projectContainer.setAttribute('id', formattedTitle);
     projectTitle.textContent = project.title;
     projectContainer.appendChild(projectTitle);
 
@@ -100,7 +121,7 @@ const createMain = () => {
       }
 
       const taskContainer = createTaskContainer(
-        formatTitle,
+        formattedTitle,
         task.title,
         task.dueDate,
       );
@@ -110,6 +131,7 @@ const createMain = () => {
 
     addTask.classList.add('add-task');
     addTask.textContent = '＋ Add task';
+    addTask.addEventListener('click', () => handleAddTask(project));
     projectContainer.appendChild(addTask);
 
     if (projectContainer.querySelector('.task-container')) {
