@@ -1,7 +1,6 @@
-const createTask = (title, dueDate, priority) => {
+const createTask = (title, dueDate) => {
   let taskTitle = title;
   let taskDueDate = dueDate;
-  let taskPriority = priority;
   let taskCompleted = false;
 
   return {
@@ -19,14 +18,6 @@ const createTask = (title, dueDate, priority) => {
 
     set dueDate(dueDate) {
       taskDueDate = dueDate;
-    },
-
-    get priority() {
-      return taskPriority;
-    },
-
-    set priority(priority) {
-      taskPriority = priority;
     },
 
     get completed() {

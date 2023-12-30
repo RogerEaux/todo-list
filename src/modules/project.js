@@ -3,8 +3,8 @@ import createTask from './task';
 const createProject = (title) => {
   let projectTitle = title;
   const projectTasks = [
-    createTask('Smile', 'Today', 0),
-    createTask('Pet dog', 'Now', 0),
+    createTask('Smile', 'Today'),
+    createTask('Pet dog', 'Now'),
   ];
 
   const addTask = (task) => {
