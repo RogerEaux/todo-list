@@ -50,13 +50,15 @@ const validateNewTitle = (project, title) => {
   project.tasks.forEach((task) => {
     if (formatTitle(title) === formatTitle(task.title)) {
       errorMessage = 'Task titles must be different';
+    } else if (title === '') {
+      errorMessage = 'Task must have a title';
     }
   });
 
   return errorMessage;
 };
 
-const handleEditTaskTitleInput = (e, taskID) => {
+const handleEditTaskTitleInput = (e, taskID, clikcOutsideInput) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
@@ -98,6 +100,8 @@ const handleEditTaskTitleInput = (e, taskID) => {
       ),
       taskEditedNode,
     );
+
+    document.removeEventListener('click', clikcOutsideInput);
   }
 };
 
@@ -121,6 +125,7 @@ const createTaskContainer = (projectID, title, dueDate) => {
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
   const taskID = `${projectID}--${formatTitle(title)}`;
+  const clikcOutsideInput = (e) => handleClickOutsideInput(e, taskID);
 
   taskContainer.classList.add('task-container');
   taskContainer.setAttribute('id', taskID);
@@ -133,14 +138,14 @@ const createTaskContainer = (projectID, title, dueDate) => {
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
   taskTitleInput.addEventListener('keydown', (e) =>
-    handleEditTaskTitleInput(e, taskID),
+    handleEditTaskTitleInput(e, taskID, clikcOutsideInput),
   );
   taskTitle.textContent = title;
   taskTitle.classList.add('task-title');
   taskTitle.addEventListener('click', () => handleEditTaskTitle(taskID));
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
-  document.addEventListener('click', (e) => handleClickOutsideInput(e, taskID));
+  document.addEventListener('click', clikcOutsideInput);
 
   taskCheckboxContainer.appendChild(taskCompleted);
   taskCheckboxContainer.appendChild(taskLabel);
