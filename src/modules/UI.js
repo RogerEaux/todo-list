@@ -44,6 +44,18 @@ const handleClickOutsideInput = (e, taskID) => {
   taskTitleInput.setAttribute('style', 'visibility:hidden');
 };
 
+const validateNewTitle = (project, title) => {
+  let errorMessage = '';
+
+  project.tasks.forEach((task) => {
+    if (formatTitle(title) === formatTitle(task.title)) {
+      errorMessage = 'Task titles must be different';
+    }
+  });
+
+  return errorMessage;
+};
+
 const handleEditTaskTitleInput = (e, taskID) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
@@ -62,15 +74,30 @@ const handleEditTaskTitleInput = (e, taskID) => {
       `${taskID.split('--')[0]}`,
     );
     const taskEditedNode = document.getElementById(taskID);
+
     const projectIndex = Array.from(allTasksNode.children).indexOf(
       projectEditedNode,
     );
     const taskIndex =
       Array.from(projectEditedNode.children).indexOf(taskEditedNode) - 1;
-    const taskEdited = taskList.projects[projectIndex].tasks[taskIndex];
+    const projectEdited = taskList.projects[projectIndex];
+    const taskEdited = projectEdited.tasks[taskIndex];
+
+    const errorMessage = validateNewTitle(projectEdited, taskTitleInput.value);
+    if (errorMessage) {
+      console.log(errorMessage);
+      return;
+    }
 
     taskEdited.title = taskTitleInput.value;
-    taskTitle.textContent = taskTitleInput.value;
+    projectEditedNode.replaceChild(
+      createTaskContainer(
+        formatTitle(projectEdited.title),
+        taskEdited.title,
+        taskEdited.dueDate,
+      ),
+      taskEditedNode,
+    );
   }
 };
 
@@ -126,8 +153,8 @@ const createTaskContainer = (projectID, title, dueDate) => {
 };
 
 const handleAddTask = (project) => {
-  const formattedTitle = formatTitle(project.title);
-  const projectNode = document.getElementById(formattedTitle);
+  const projectID = formatTitle(project.title);
+  const projectNode = document.getElementById(projectID);
 
   const projectTaskTitles = [];
   project.tasks.forEach((task) => {
@@ -141,7 +168,7 @@ const handleAddTask = (project) => {
   }
 
   projectNode.insertBefore(
-    createTaskContainer(formattedTitle, title, 'Today'),
+    createTaskContainer(projectID, title, 'Today'),
     projectNode.lastChild,
   );
   project.addTask(createTask(title, 'Today'));
