@@ -48,6 +48,7 @@ body {
 }
 
 .main {
+  width: 80%;
   flex: 1;
   display: grid;
   grid-template-columns: 16rem 1fr;
@@ -75,6 +76,10 @@ body {
 .task-container .task-title {
   grid-area: title;
   font-size: 1rem;
+}
+
+.task-container p.task-title {
+  cursor: pointer;
 }
 
 .task-container .task-due {
@@ -109,11 +114,10 @@ body {
 }
 
 .add-task {
-  width: max-content;
   font-size: 1rem;
   text-align: left;
   border: none;
-  border-radius: 5%;
+  border-radius: 5px;
   padding: 8px;
   color: var(--light-gray);
   cursor: pointer;
