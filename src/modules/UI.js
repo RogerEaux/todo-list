@@ -30,6 +30,50 @@ const createSide = () => {
 
 const formatTitle = (title) => title.replaceAll(' ', '-').toLowerCase();
 
+const handleEditTaskTitleInput = (e, taskID) => {
+  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
+  const taskTitleInput = document.querySelector(
+    `#${taskID} > input.task-title`,
+  );
+
+  if (e.keyCode === 27 || e.keyCode === 13) {
+    taskTitle.setAttribute('style', 'visibility:visible');
+    taskTitleInput.setAttribute('onfocus', "value=''");
+    taskTitleInput.setAttribute('style', 'visibility:hidden');
+  }
+  if (e.keyCode === 13) {
+    const taskList = getTaskList().taskList;
+    const allTasksNode = document.querySelector('.all-tasks');
+    const projectEditedNode = document.getElementById(
+      `${taskID.split('--')[0]}`,
+    );
+    const taskEditedNode = document.getElementById(taskID);
+    const projectIndex = Array.from(allTasksNode.children).indexOf(
+      projectEditedNode,
+    );
+    const taskIndex =
+      Array.from(projectEditedNode.children).indexOf(taskEditedNode) - 1;
+    const taskEdited = taskList.projects[projectIndex].tasks[taskIndex];
+
+    taskEdited.title = taskTitleInput.value;
+    taskTitle.textContent = taskTitleInput.value;
+  }
+};
+
+const handleClickOutsideInput = (e, taskID) => {
+  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
+  const taskTitleInput = document.querySelector(
+    `#${taskID} > input.task-title`,
+  );
+
+  if (e.target.closest(`#${taskID} > .task-title`)) {
+    return;
+  }
+  taskTitle.setAttribute('style', 'visibility:visible');
+  taskTitleInput.setAttribute('onfocus', "value=''");
+  taskTitleInput.setAttribute('style', 'visibility:hidden');
+};
+
 const handleEditTaskTitle = (taskID) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
@@ -39,40 +83,6 @@ const handleEditTaskTitle = (taskID) => {
   taskTitle.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('style', 'visibility:visible');
   taskTitleInput.focus();
-
-  document.addEventListener('click', (e) => {
-    if (e.target.closest(`#${taskID} > .task-title`)) {
-      return;
-    }
-    taskTitle.setAttribute('style', 'visibility:visible');
-    taskTitleInput.setAttribute('onfocus', "value=''");
-    taskTitleInput.setAttribute('style', 'visibility:hidden');
-  });
-
-  taskTitleInput.addEventListener('keydown', (e) => {
-    if (e.keyCode === 27 || e.keyCode === 13) {
-      taskTitle.setAttribute('style', 'visibility:visible');
-      taskTitleInput.setAttribute('onfocus', "value=''");
-      taskTitleInput.setAttribute('style', 'visibility:hidden');
-    }
-    if (e.keyCode === 13) {
-      const taskList = getTaskList().taskList;
-      const allTasksNode = document.querySelector('.all-tasks');
-      const projectEditedNode = document.getElementById(
-        `${taskID.split('--')[0]}`,
-      );
-      const taskEditedNode = document.getElementById(taskID);
-      const projectIndex = Array.from(allTasksNode.children).indexOf(
-        projectEditedNode,
-      );
-      const taskIndex =
-        Array.from(projectEditedNode.children).indexOf(taskEditedNode) - 1;
-      const taskEdited = taskList.projects[projectIndex].tasks[taskIndex];
-
-      taskEdited.title = 'Yeet';
-      taskTitle.textContent = 'Yeet';
-    }
-  });
 };
 
 const createTaskContainer = (projectID, title, dueDate) => {
@@ -95,11 +105,15 @@ const createTaskContainer = (projectID, title, dueDate) => {
   taskTitleInput.classList.add('task-title');
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
+  taskTitleInput.addEventListener('keydown', (e) =>
+    handleEditTaskTitleInput(e, taskID),
+  );
   taskTitle.textContent = title;
   taskTitle.classList.add('task-title');
   taskTitle.addEventListener('click', () => handleEditTaskTitle(taskID));
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
+  document.addEventListener('click', (e) => handleClickOutsideInput(e, taskID));
 
   taskCheckboxContainer.appendChild(taskCompleted);
   taskCheckboxContainer.appendChild(taskLabel);
