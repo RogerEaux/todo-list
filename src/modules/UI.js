@@ -30,6 +30,20 @@ const createSide = () => {
 
 const formatTitle = (title) => title.replaceAll(' ', '-').toLowerCase();
 
+const handleClickOutsideInput = (e, taskID) => {
+  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
+  const taskTitleInput = document.querySelector(
+    `#${taskID} > input.task-title`,
+  );
+
+  if (e.target.closest(`#${taskID} > .task-title`)) {
+    return;
+  }
+  taskTitle.setAttribute('style', 'visibility:visible');
+  taskTitleInput.setAttribute('onfocus', "value=''");
+  taskTitleInput.setAttribute('style', 'visibility:hidden');
+};
+
 const handleEditTaskTitleInput = (e, taskID) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
@@ -58,20 +72,6 @@ const handleEditTaskTitleInput = (e, taskID) => {
     taskEdited.title = taskTitleInput.value;
     taskTitle.textContent = taskTitleInput.value;
   }
-};
-
-const handleClickOutsideInput = (e, taskID) => {
-  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
-  const taskTitleInput = document.querySelector(
-    `#${taskID} > input.task-title`,
-  );
-
-  if (e.target.closest(`#${taskID} > .task-title`)) {
-    return;
-  }
-  taskTitle.setAttribute('style', 'visibility:visible');
-  taskTitleInput.setAttribute('onfocus', "value=''");
-  taskTitleInput.setAttribute('style', 'visibility:hidden');
 };
 
 const handleEditTaskTitle = (taskID) => {
