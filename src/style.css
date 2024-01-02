@@ -54,14 +54,21 @@ body {
   grid-template-columns: 16rem 1fr;
 }
 
+.main > nav {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
 .project-container {
   display: flex;
   flex-direction: column;
   padding: 16px;
 }
 
-.project-container > p {
+.project-container > h1 {
   padding: 16px;
+  font-size: 1.4rem;
 }
 
 .task-container {
@@ -113,7 +120,7 @@ body {
   border-color: #66bb6a;
 }
 
-.add-task {
+.add-button {
   font-size: 1rem;
   text-align: left;
   border: none;
@@ -123,11 +130,11 @@ body {
   cursor: pointer;
 }
 
-.add-task:hover {
+.add-button:hover {
   filter: brightness(90%);
 }
 
-.add-task:active {
+.add-button:active {
   filter: brightness(80%);
 }
 
