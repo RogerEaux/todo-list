@@ -130,12 +130,33 @@ body {
   cursor: pointer;
 }
 
-.add-button:hover {
+.project-button {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: left;
+  font-size: 1rem;
+  gap: 8px;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  color: var(--gray);
+  cursor: pointer;
+}
+
+.add-button:hover,
+.project-button:hover {
   filter: brightness(90%);
 }
 
-.add-button:active {
+.add-button:active,
+.project-button:active {
   filter: brightness(80%);
+}
+
+.project-button img {
+  width: auto;
+  height: 1.5rem;
 }
 
 .footer {
