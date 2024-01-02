@@ -61,6 +61,27 @@ body {
   gap: 8px;
 }
 
+nav > * {
+  padding: 8px;
+}
+
+.project-button {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: left;
+  font-size: 1rem;
+  gap: 8px;
+  border: none;
+  border-radius: 5px;
+  color: var(--gray);
+  cursor: pointer;
+}
+
+nav > h1 {
+  font-size: 1.2rem;
+}
+
 .project-container {
   display: flex;
   flex-direction: column;
@@ -128,20 +149,6 @@ body {
   border-radius: 5px;
   padding: 8px;
   color: var(--light-gray);
-  cursor: pointer;
-}
-
-.project-button {
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  justify-content: left;
-  font-size: 1rem;
-  gap: 8px;
-  border: none;
-  border-radius: 5px;
-  padding: 8px;
-  color: var(--gray);
   cursor: pointer;
 }
 

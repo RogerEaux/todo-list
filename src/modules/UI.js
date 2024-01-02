@@ -4,6 +4,7 @@ import inboxIcon from '../images/inbox.svg';
 import todayIcon from '../images/calendar-day.svg';
 import soonIcon from '../images/calendar-soon.svg';
 import getTaskList from './taskList';
+import createProject from './project';
 import createTask from './task';
 
 // Helper functions
@@ -35,7 +36,24 @@ const handleProjectClick = (e) => {
   e.target.classList.add('current-selected-project');
 };
 
-const handleAddProject = () => {};
+const handleAddProject = () => {
+  const nav = document.querySelector('nav');
+  const taskList = getTaskList().taskList;
+
+  const projectsTitles = [];
+  taskList.projects.forEach((project) => {
+    projectsTitles.push(project.title);
+  });
+
+  let title = 'Do all the things';
+
+  while (projectsTitles.includes(title)) {
+    title = title.replace('o ', 'oo ');
+  }
+
+  nav.insertBefore(createProjectButton(title), nav.lastChild);
+  taskList.addProject(createProject(title));
+};
 
 const handleClickOutsideInput = (e, taskID) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
@@ -169,6 +187,7 @@ const createSide = () => {
   const todayImg = document.createElement('img');
   const soon = createProjectButton('Soon');
   const soonImg = document.createElement('img');
+  const projectSection = document.createElement('h1');
   const addProject = document.createElement('button');
 
   inboxImg.src = inboxIcon;
@@ -181,6 +200,7 @@ const createSide = () => {
   soonImg.src = soonIcon;
   soonImg.alt = 'Soon icon';
   soon.appendChild(soonImg);
+  projectSection.textContent = 'Projects';
   addProject.classList.add('add-button');
   addProject.textContent = '＋ Add project';
   addProject.addEventListener('click', () => handleAddProject());
@@ -188,6 +208,7 @@ const createSide = () => {
   side.appendChild(inbox);
   side.appendChild(today);
   side.appendChild(soon);
+  side.appendChild(projectSection);
   side.appendChild(addProject);
 
   return side;
