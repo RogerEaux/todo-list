@@ -1,5 +1,6 @@
 import '../style.css';
-import checkmark from '../images/done.svg';
+import checkmarkIcon from '../images/done.svg';
+import inboxIcon from '../images/inbox.svg';
 import getTaskList from './taskList';
 import createTask from './task';
 
@@ -95,6 +96,8 @@ const handleEditTaskTitle = (taskID) => {
   taskTitleInput.focus();
 };
 
+const handleAddProject = () => {};
+
 const handleAddTask = (project) => {
   const projectNode = document.getElementById(formatTitle(project.title));
 
@@ -116,8 +119,6 @@ const handleAddTask = (project) => {
   project.addTask(createTask(title, 'Today'));
 };
 
-const handleAddProject = () => {};
-
 // Create DOM elements
 
 const createTop = () => {
@@ -129,7 +130,7 @@ const createTop = () => {
   top.classList.add('header');
   logoTitle.textContent = 'Do a thing';
   logoContainer.classList.add('logo-container');
-  logo.src = checkmark;
+  logo.src = checkmarkIcon;
   logo.alt = 'Two checkmarks';
 
   logoContainer.appendChild(logo);
@@ -141,19 +142,30 @@ const createTop = () => {
 
 const createSide = () => {
   const side = document.createElement('nav');
-
+  const inbox = document.createElement('button');
+  const inboxImg = document.createElement('img');
+  const today = document.createElement('button');
   const addProject = document.createElement('button');
 
-  addProject.classList.add('add-task');
-  addProject.textContent = '＋ Add task';
+  inbox.textContent = 'Inbox';
+  inbox.classList.add('project-button');
+  inboxImg.src = inboxIcon;
+  inboxImg.alt = 'Inbox icon';
+  inbox.appendChild(inboxImg);
+  addProject.classList.add('add-button');
+  addProject.textContent = '＋ Add project';
   addProject.addEventListener('click', () => handleAddProject());
+
+  side.appendChild(inbox);
+  side.appendChild(today);
+  side.appendChild(addProject);
 
   return side;
 };
 
 const createProjectContainer = (project) => {
   const projectContainer = document.createElement('div');
-  const projectTitle = document.createElement('p');
+  const projectTitle = document.createElement('h1');
   const projectID = formatTitle(project.title);
   const addTask = document.createElement('button');
 
@@ -172,7 +184,7 @@ const createProjectContainer = (project) => {
     projectContainer.appendChild(taskContainer);
   });
 
-  addTask.classList.add('add-task');
+  addTask.classList.add('add-button');
   addTask.textContent = '＋ Add task';
   addTask.addEventListener('click', () => handleAddTask(project));
   projectContainer.appendChild(addTask);
