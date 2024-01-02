@@ -3,46 +3,9 @@ import checkmark from '../images/done.svg';
 import getTaskList from './taskList';
 import createTask from './task';
 
-const createTop = () => {
-  const top = document.createElement('header');
-  const logo = document.createElement('img');
-  const logoTitle = document.createElement('p');
-  const logoContainer = document.createElement('div');
-
-  top.classList.add('header');
-  logoTitle.textContent = 'Do a thing';
-  logoContainer.classList.add('logo-container');
-  logo.src = checkmark;
-  logo.alt = 'Two checkmarks';
-
-  logoContainer.appendChild(logo);
-  logoContainer.appendChild(logoTitle);
-  top.appendChild(logoContainer);
-
-  return top;
-};
-
-const createSide = () => {
-  const side = document.createElement('nav');
-
-  return side;
-};
+// Helper functions
 
 const formatTitle = (title) => title.replaceAll(' ', '-').toLowerCase();
-
-const handleClickOutsideInput = (e, taskID) => {
-  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
-  const taskTitleInput = document.querySelector(
-    `#${taskID} > input.task-title`,
-  );
-
-  if (e.target.closest(`#${taskID} > .task-title`)) {
-    return;
-  }
-  taskTitle.setAttribute('style', 'visibility:visible');
-  taskTitleInput.setAttribute('onfocus', "value=''");
-  taskTitleInput.setAttribute('style', 'visibility:hidden');
-};
 
 const validateNewTitle = (project, title) => {
   let errorMessage = '';
@@ -56,6 +19,22 @@ const validateNewTitle = (project, title) => {
   });
 
   return errorMessage;
+};
+
+// Handler functions
+
+const handleClickOutsideInput = (e, taskID) => {
+  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
+  const taskTitleInput = document.querySelector(
+    `#${taskID} > input.task-title`,
+  );
+
+  if (e.target.closest(`#${taskID} > .task-title`)) {
+    return;
+  }
+  taskTitle.setAttribute('style', 'visibility:visible');
+  taskTitleInput.setAttribute('onfocus', "value=''");
+  taskTitleInput.setAttribute('style', 'visibility:hidden');
 };
 
 const handleEditTaskTitleInput = (e, taskID, clikcOutsideInput) => {
@@ -116,6 +95,61 @@ const handleEditTaskTitle = (taskID) => {
   taskTitleInput.focus();
 };
 
+const handleAddTask = (project) => {
+  const projectID = formatTitle(project.title);
+  const projectNode = document.getElementById(projectID);
+
+  const projectTaskTitles = [];
+  project.tasks.forEach((task) => {
+    projectTaskTitles.push(task.title);
+  });
+
+  let title = 'Do the thing';
+
+  while (projectTaskTitles.includes(title)) {
+    title = title.replace('o ', 'oo ');
+  }
+
+  projectNode.insertBefore(
+    createTaskContainer(projectID, title, 'Today'),
+    projectNode.lastChild,
+  );
+  project.addTask(createTask(title, 'Today'));
+};
+
+// Create DOM elements
+
+const createTop = () => {
+  const top = document.createElement('header');
+  const logo = document.createElement('img');
+  const logoTitle = document.createElement('p');
+  const logoContainer = document.createElement('div');
+
+  top.classList.add('header');
+  logoTitle.textContent = 'Do a thing';
+  logoContainer.classList.add('logo-container');
+  logo.src = checkmark;
+  logo.alt = 'Two checkmarks';
+
+  logoContainer.appendChild(logo);
+  logoContainer.appendChild(logoTitle);
+  top.appendChild(logoContainer);
+
+  return top;
+};
+
+const createSide = () => {
+  const side = document.createElement('nav');
+
+  const addProject = document.createElement('button');
+
+  addProject.classList.add('add-task');
+  addProject.textContent = '＋ Add task';
+  addProject.addEventListener('click', () => handleAddProject());
+
+  return side;
+};
+
 const createTaskContainer = (projectID, title, dueDate) => {
   const taskContainer = document.createElement('div');
   const taskCheckboxContainer = document.createElement('div');
@@ -155,28 +189,6 @@ const createTaskContainer = (projectID, title, dueDate) => {
   taskContainer.appendChild(taskDueDate);
 
   return taskContainer;
-};
-
-const handleAddTask = (project) => {
-  const projectID = formatTitle(project.title);
-  const projectNode = document.getElementById(projectID);
-
-  const projectTaskTitles = [];
-  project.tasks.forEach((task) => {
-    projectTaskTitles.push(task.title);
-  });
-
-  let title = 'Do the thing';
-
-  while (projectTaskTitles.includes(title)) {
-    title = title.replace('o ', 'oo ');
-  }
-
-  projectNode.insertBefore(
-    createTaskContainer(projectID, title, 'Today'),
-    projectNode.lastChild,
-  );
-  project.addTask(createTask(title, 'Today'));
 };
 
 const createMain = () => {
