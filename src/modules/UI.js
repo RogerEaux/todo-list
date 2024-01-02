@@ -155,11 +155,27 @@ const createProjectContainer = (project) => {
   const projectContainer = document.createElement('div');
   const projectTitle = document.createElement('p');
   const projectID = formatTitle(project.title);
+  const addTask = document.createElement('button');
 
   projectContainer.classList.add('project-container');
   projectContainer.setAttribute('id', projectID);
   projectTitle.textContent = project.title;
   projectContainer.appendChild(projectTitle);
+
+  project.tasks.forEach((task) => {
+    const taskContainer = createTaskContainer(
+      project.title,
+      task.title,
+      task.dueDate,
+    );
+
+    projectContainer.appendChild(taskContainer);
+  });
+
+  addTask.classList.add('add-task');
+  addTask.textContent = '＋ Add task';
+  addTask.addEventListener('click', () => handleAddTask(project));
+  projectContainer.appendChild(addTask);
 
   return projectContainer;
 };
@@ -211,13 +227,8 @@ const createMain = () => {
   const allTasks = document.createElement('div');
   const taskList = getTaskList().taskList;
   const defaultProjects = ['Inbox', 'Today'];
-  let dueDate;
 
   main.appendChild(createSide());
-
-  if (currentProject === 'Today') {
-    dueDate = 'Today';
-  }
 
   taskList.projects.forEach((project) => {
     if (
@@ -227,27 +238,7 @@ const createMain = () => {
       return;
     }
 
-    const addTask = document.createElement('button');
     const projectContainer = createProjectContainer(project);
-
-    project.tasks.forEach((task) => {
-      if (currentProject === 'Today' && task.dueDate !== dueDate) {
-        return;
-      }
-
-      const taskContainer = createTaskContainer(
-        project.title,
-        task.title,
-        task.dueDate,
-      );
-
-      projectContainer.appendChild(taskContainer);
-    });
-
-    addTask.classList.add('add-task');
-    addTask.textContent = '＋ Add task';
-    addTask.addEventListener('click', () => handleAddTask(project));
-    projectContainer.appendChild(addTask);
 
     if (projectContainer.querySelector('.task-container')) {
       allTasks.appendChild(projectContainer);
