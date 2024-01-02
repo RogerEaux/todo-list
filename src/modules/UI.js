@@ -73,7 +73,7 @@ const handleEditTaskTitleInput = (e, taskID, clikcOutsideInput) => {
     taskEdited.title = taskTitleInput.value;
     projectEditedNode.replaceChild(
       createTaskContainer(
-        formatTitle(projectEdited.title),
+        projectEdited.title,
         taskEdited.title,
         taskEdited.dueDate,
       ),
@@ -96,8 +96,7 @@ const handleEditTaskTitle = (taskID) => {
 };
 
 const handleAddTask = (project) => {
-  const projectID = formatTitle(project.title);
-  const projectNode = document.getElementById(projectID);
+  const projectNode = document.getElementById(formatTitle(project.title));
 
   const projectTaskTitles = [];
   project.tasks.forEach((task) => {
@@ -111,11 +110,13 @@ const handleAddTask = (project) => {
   }
 
   projectNode.insertBefore(
-    createTaskContainer(projectID, title, 'Today'),
+    createTaskContainer(project.title, title, 'Today'),
     projectNode.lastChild,
   );
   project.addTask(createTask(title, 'Today'));
 };
+
+const handleAddProject = () => {};
 
 // Create DOM elements
 
@@ -150,7 +151,20 @@ const createSide = () => {
   return side;
 };
 
-const createTaskContainer = (projectID, title, dueDate) => {
+const createProjectContainer = (project) => {
+  const projectContainer = document.createElement('div');
+  const projectTitle = document.createElement('p');
+  const projectID = formatTitle(project.title);
+
+  projectContainer.classList.add('project-container');
+  projectContainer.setAttribute('id', projectID);
+  projectTitle.textContent = project.title;
+  projectContainer.appendChild(projectTitle);
+
+  return projectContainer;
+};
+
+const createTaskContainer = (projectTitle, title, dueDate) => {
   const taskContainer = document.createElement('div');
   const taskCheckboxContainer = document.createElement('div');
   const taskCompleted = document.createElement('input');
@@ -158,7 +172,7 @@ const createTaskContainer = (projectID, title, dueDate) => {
   const taskTitleInput = document.createElement('input');
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
-  const taskID = `${projectID}--${formatTitle(title)}`;
+  const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
   const clikcOutsideInput = (e) => handleClickOutsideInput(e, taskID);
 
   taskContainer.classList.add('task-container');
@@ -213,15 +227,8 @@ const createMain = () => {
       return;
     }
 
-    const projectContainer = document.createElement('div');
-    const projectTitle = document.createElement('p');
-    const projectID = formatTitle(project.title);
     const addTask = document.createElement('button');
-
-    projectContainer.classList.add('project-container');
-    projectContainer.setAttribute('id', projectID);
-    projectTitle.textContent = project.title;
-    projectContainer.appendChild(projectTitle);
+    const projectContainer = createProjectContainer(project);
 
     project.tasks.forEach((task) => {
       if (currentProject === 'Today' && task.dueDate !== dueDate) {
@@ -229,7 +236,7 @@ const createMain = () => {
       }
 
       const taskContainer = createTaskContainer(
-        projectID,
+        project.title,
         task.title,
         task.dueDate,
       );
