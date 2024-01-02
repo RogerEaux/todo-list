@@ -1,6 +1,8 @@
 import '../style.css';
 import checkmarkIcon from '../images/done.svg';
 import inboxIcon from '../images/inbox.svg';
+import todayIcon from '../images/calendar-day.svg';
+import soonIcon from '../images/calendar-soon.svg';
 import getTaskList from './taskList';
 import createTask from './task';
 
@@ -140,24 +142,41 @@ const createTop = () => {
   return top;
 };
 
+const createProjectButton = (title) => {
+  const button = document.createElement('button');
+
+  button.textContent = title;
+  button.classList.add('project-button');
+
+  return button;
+};
+
 const createSide = () => {
   const side = document.createElement('nav');
-  const inbox = document.createElement('button');
+  const inbox = createProjectButton('Inbox');
   const inboxImg = document.createElement('img');
-  const today = document.createElement('button');
+  const today = createProjectButton('Today');
+  const todayImg = document.createElement('img');
+  const soon = createProjectButton('Soon');
+  const soonImg = document.createElement('img');
   const addProject = document.createElement('button');
 
-  inbox.textContent = 'Inbox';
-  inbox.classList.add('project-button');
   inboxImg.src = inboxIcon;
   inboxImg.alt = 'Inbox icon';
   inbox.appendChild(inboxImg);
+  todayImg.src = todayIcon;
+  todayImg.alt = 'Today icon';
+  today.appendChild(todayImg);
+  soonImg.src = soonIcon;
+  soonImg.alt = 'Soon icon';
+  soon.appendChild(soonImg);
   addProject.classList.add('add-button');
   addProject.textContent = '＋ Add project';
   addProject.addEventListener('click', () => handleAddProject());
 
   side.appendChild(inbox);
   side.appendChild(today);
+  side.appendChild(soon);
   side.appendChild(addProject);
 
   return side;
