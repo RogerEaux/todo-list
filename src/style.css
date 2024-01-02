@@ -152,7 +152,7 @@ body {
 
 .add-button:active,
 .project-button:active,
-.current-selected-project {
+.main .current-selected-project {
   filter: brightness(80%);
 }
 
