@@ -1,15 +1,18 @@
 import createProject from './project';
 
 const createTaskList = () => {
-  const taskProjects = [];
+  const taskProjects = [createProject('Inbox'), createProject('Today')];
 
-  taskProjects.push(createProject('Inbox'));
-  taskProjects.push(createProject('Today'));
+  const addProject = (project) => {
+    taskProjects.push(project);
+  };
 
   return {
     get projects() {
       return taskProjects;
     },
+
+    addProject,
   };
 };
 
