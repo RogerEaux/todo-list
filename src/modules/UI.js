@@ -26,6 +26,17 @@ const validateNewTitle = (project, title) => {
 
 // Handler functions
 
+const handleProjectClick = (e) => {
+  const navButtons = document.querySelectorAll('nav button');
+
+  navButtons.forEach((button) => {
+    button.classList.remove('current-selected-project');
+  });
+  e.target.classList.add('current-selected-project');
+};
+
+const handleAddProject = () => {};
+
 const handleClickOutsideInput = (e, taskID) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
@@ -98,8 +109,6 @@ const handleEditTaskTitle = (taskID) => {
   taskTitleInput.focus();
 };
 
-const handleAddProject = () => {};
-
 const handleAddTask = (project) => {
   const projectNode = document.getElementById(formatTitle(project.title));
 
@@ -147,6 +156,7 @@ const createProjectButton = (title) => {
 
   button.textContent = title;
   button.classList.add('project-button');
+  button.addEventListener('click', (e) => handleProjectClick(e));
 
   return button;
 };
@@ -163,6 +173,7 @@ const createSide = () => {
 
   inboxImg.src = inboxIcon;
   inboxImg.alt = 'Inbox icon';
+  inbox.classList.add('current-selected-project');
   inbox.appendChild(inboxImg);
   todayImg.src = todayIcon;
   todayImg.alt = 'Today icon';
