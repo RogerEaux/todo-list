@@ -1,7 +1,10 @@
 import createProject from './project';
+import createTask from './task';
 
 const createTaskList = () => {
-  const taskProjects = [createProject('Inbox'), createProject('Today')];
+  const taskProjects = [createProject('Personal')];
+  taskProjects[0].addTask(createTask('Pet dog', 'Now'));
+  taskProjects[0].addTask(createTask('Smile', 'Today'));
 
   const addProject = (project) => {
     taskProjects.push(project);

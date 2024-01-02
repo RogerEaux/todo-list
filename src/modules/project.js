@@ -1,11 +1,6 @@
-import createTask from './task';
-
 const createProject = (title) => {
   let projectTitle = title;
-  const projectTasks = [
-    createTask('Smile', 'Today'),
-    createTask('Pet dog', 'Now'),
-  ];
+  const projectTasks = [];
 
   const addTask = (task) => {
     projectTasks.push(task);

@@ -189,6 +189,7 @@ const createSide = () => {
   const soonImg = document.createElement('img');
   const projectSection = document.createElement('h1');
   const addProject = document.createElement('button');
+  const taskList = getTaskList().taskList;
 
   inboxImg.src = inboxIcon;
   inboxImg.alt = 'Inbox icon';
@@ -209,6 +210,12 @@ const createSide = () => {
   side.appendChild(today);
   side.appendChild(soon);
   side.appendChild(projectSection);
+
+
+  taskList.projects.forEach((project) => {
+    side.appendChild(createProjectButton(project.title))
+  });
+
   side.appendChild(addProject);
 
   return side;
