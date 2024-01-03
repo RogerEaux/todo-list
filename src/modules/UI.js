@@ -29,11 +29,23 @@ const validateNewTitle = (project, title) => {
 
 const handleProjectClick = (e) => {
   const navButtons = document.querySelectorAll('nav button');
+  const taskList = getTaskList();
+  const projectTitle = e.target.textContent;
+  const main = document.querySelector('main');
 
   navButtons.forEach((button) => {
     button.classList.remove('current-selected-project');
   });
   e.target.classList.add('current-selected-project');
+
+  if (projectTitle === taskList.currentProject) {
+    return;
+  }
+
+  taskList.currentProject = projectTitle;
+  console.log(taskList.currentProject);
+  main.insertBefore(createAllTasksContainer(), main.lastChild);
+  main.removeChild(main.lastChild);
 };
 
 const handleAddProject = () => {
@@ -55,7 +67,7 @@ const handleAddProject = () => {
   taskList.addProject(createProject(title));
 };
 
-const handleClickOutsideInput = (e, taskID) => {
+const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
@@ -67,9 +79,10 @@ const handleClickOutsideInput = (e, taskID) => {
   taskTitle.setAttribute('style', 'visibility:visible');
   taskTitleInput.setAttribute('onfocus', "value=''");
   taskTitleInput.setAttribute('style', 'visibility:hidden');
+  document.removeEventListener('click', clickOutsideInput);
 };
 
-const handleEditTaskTitleInput = (e, taskID, clikcOutsideInput) => {
+const handleEditTaskTitleInput = (e, taskID) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
@@ -112,7 +125,9 @@ const handleEditTaskTitleInput = (e, taskID, clikcOutsideInput) => {
       taskEditedNode,
     );
 
-    document.removeEventListener('click', clikcOutsideInput);
+    document.removeEventListener('click', (e) =>
+      handleClickOutsideInput(e, taskID),
+    );
   }
 };
 
@@ -121,6 +136,10 @@ const handleEditTaskTitle = (taskID) => {
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
   );
+  const clickOutsideInput = (e) =>
+    handleClickOutsideInput(e, taskID, clickOutsideInput);
+
+  document.addEventListener('click', clickOutsideInput);
 
   taskTitle.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('style', 'visibility:visible');
@@ -211,14 +230,52 @@ const createSide = () => {
   side.appendChild(soon);
   side.appendChild(projectSection);
 
-
   taskList.projects.forEach((project) => {
-    side.appendChild(createProjectButton(project.title))
+    side.appendChild(createProjectButton(project.title));
   });
 
   side.appendChild(addProject);
 
   return side;
+};
+
+const createTaskContainer = (projectTitle, title, dueDate) => {
+  const taskContainer = document.createElement('div');
+  const taskCheckboxContainer = document.createElement('div');
+  const taskCompleted = document.createElement('input');
+  const taskLabel = document.createElement('label');
+  const taskTitleInput = document.createElement('input');
+  const taskTitle = document.createElement('p');
+  const taskDueDate = document.createElement('p');
+  const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
+
+  taskContainer.classList.add('task-container');
+  taskContainer.setAttribute('id', taskID);
+  taskCheckboxContainer.classList.add('checkbox-container');
+  taskCompleted.setAttribute('type', 'checkbox');
+  taskCompleted.setAttribute('id', `${taskID}-input-completed`);
+  taskLabel.setAttribute('for', `${taskID}-input-completed`);
+  taskTitleInput.setAttribute('type', 'text');
+  taskTitleInput.classList.add('task-title');
+  taskTitleInput.setAttribute('style', 'visibility:hidden');
+  taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
+  taskTitleInput.addEventListener('keydown', (e) =>
+    handleEditTaskTitleInput(e, taskID),
+  );
+  taskTitle.textContent = title;
+  taskTitle.classList.add('task-title');
+  taskTitle.addEventListener('click', () => handleEditTaskTitle(taskID));
+  taskDueDate.textContent = dueDate;
+  taskDueDate.classList.add('task-due');
+
+  taskCheckboxContainer.appendChild(taskCompleted);
+  taskCheckboxContainer.appendChild(taskLabel);
+  taskContainer.appendChild(taskCheckboxContainer);
+  taskContainer.appendChild(taskTitleInput);
+  taskContainer.appendChild(taskTitle);
+  taskContainer.appendChild(taskDueDate);
+
+  return taskContainer;
 };
 
 const createProjectContainer = (project) => {
@@ -250,55 +307,11 @@ const createProjectContainer = (project) => {
   return projectContainer;
 };
 
-const createTaskContainer = (projectTitle, title, dueDate) => {
-  const taskContainer = document.createElement('div');
-  const taskCheckboxContainer = document.createElement('div');
-  const taskCompleted = document.createElement('input');
-  const taskLabel = document.createElement('label');
-  const taskTitleInput = document.createElement('input');
-  const taskTitle = document.createElement('p');
-  const taskDueDate = document.createElement('p');
-  const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
-  const clikcOutsideInput = (e) => handleClickOutsideInput(e, taskID);
-
-  taskContainer.classList.add('task-container');
-  taskContainer.setAttribute('id', taskID);
-  taskCheckboxContainer.classList.add('checkbox-container');
-  taskCompleted.setAttribute('type', 'checkbox');
-  taskCompleted.setAttribute('id', `${taskID}-input-completed`);
-  taskLabel.setAttribute('for', `${taskID}-input-completed`);
-  taskTitleInput.setAttribute('type', 'text');
-  taskTitleInput.classList.add('task-title');
-  taskTitleInput.setAttribute('style', 'visibility:hidden');
-  taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
-  taskTitleInput.addEventListener('keydown', (e) =>
-    handleEditTaskTitleInput(e, taskID, clikcOutsideInput),
-  );
-  taskTitle.textContent = title;
-  taskTitle.classList.add('task-title');
-  taskTitle.addEventListener('click', () => handleEditTaskTitle(taskID));
-  taskDueDate.textContent = dueDate;
-  taskDueDate.classList.add('task-due');
-  document.addEventListener('click', clikcOutsideInput);
-
-  taskCheckboxContainer.appendChild(taskCompleted);
-  taskCheckboxContainer.appendChild(taskLabel);
-  taskContainer.appendChild(taskCheckboxContainer);
-  taskContainer.appendChild(taskTitleInput);
-  taskContainer.appendChild(taskTitle);
-  taskContainer.appendChild(taskDueDate);
-
-  return taskContainer;
-};
-
-const createMain = () => {
-  const main = document.createElement('main');
-  const currentProject = getTaskList().currentProject;
+const createAllTasksContainer = () => {
   const allTasks = document.createElement('div');
+  const currentProject = getTaskList().currentProject;
   const taskList = getTaskList().taskList;
-  const defaultProjects = ['Inbox', 'Today'];
-
-  main.appendChild(createSide());
+  const defaultProjects = ['Inbox', 'Today', 'Soon'];
 
   taskList.projects.forEach((project) => {
     if (
@@ -316,7 +329,15 @@ const createMain = () => {
   });
 
   allTasks.classList.add('all-tasks');
-  main.appendChild(allTasks);
+
+  return allTasks;
+};
+
+const createMain = () => {
+  const main = document.createElement('main');
+
+  main.appendChild(createSide());
+  main.appendChild(createAllTasksContainer());
   main.classList.add('main');
 
   return main;
