@@ -45,7 +45,6 @@ const handleProjectClick = (e) => {
   taskList.currentProject = projectTitle;
   main.insertBefore(createAllTasksContainer(), main.lastChild);
   main.removeChild(main.lastChild);
-  console.log('Second');
 };
 
 const handleAddProject = () => {
@@ -76,11 +75,12 @@ const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
   if (e.target.closest(`#${taskID} > .task-title`)) {
     return;
   }
-  taskTitle.setAttribute('style', 'visibility:visible');
-  taskTitleInput.setAttribute('onfocus', "value=''");
-  taskTitleInput.setAttribute('style', 'visibility:hidden');
   document.removeEventListener('click', clickOutsideInput);
-  console.log('First');
+  if (taskTitle) {
+    taskTitle.setAttribute('style', 'visibility:visible');
+    taskTitleInput.setAttribute('onfocus', "value=''");
+    taskTitleInput.setAttribute('style', 'visibility:hidden');
+  }
 };
 
 const handleEditTaskTitleInput = (e, taskID, clickOutsideInput) => {
