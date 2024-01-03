@@ -282,7 +282,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   return taskContainer;
 };
 
-const createProjectContainer = (project) => {
+const createProjectContainer = (project, dueDate) => {
   const projectContainer = document.createElement('div');
   const projectTitle = document.createElement('h1');
   const projectID = formatTitle(project.title);
@@ -294,13 +294,18 @@ const createProjectContainer = (project) => {
   projectContainer.appendChild(projectTitle);
 
   project.tasks.forEach((task) => {
-    const taskContainer = createTaskContainer(
-      project.title,
-      task.title,
-      task.dueDate,
-    );
+    if (
+      (dueDate === 'Today' && task.dueDate === 'Today') ||
+      dueDate === 'All'
+    ) {
+      const taskContainer = createTaskContainer(
+        project.title,
+        task.title,
+        task.dueDate,
+      );
 
-    projectContainer.appendChild(taskContainer);
+      projectContainer.appendChild(taskContainer);
+    }
   });
 
   addTask.classList.add('add-button');
@@ -318,17 +323,25 @@ const createAllTasksContainer = () => {
 
   if (currentProject === 'Inbox') {
     taskList.projects.forEach((project) => {
-      const projectContainer = createProjectContainer(project);
+      const projectContainer = createProjectContainer(project, 'All');
 
       if (projectContainer.querySelector('.task-container')) {
         allTasks.appendChild(projectContainer);
       }
     });
   } else if (currentProject === 'Today') {
+    taskList.projects.forEach((project) => {
+      const projectContainer = createProjectContainer(project, 'Today');
+
+      if (projectContainer.querySelector('.task-container')) {
+        allTasks.appendChild(projectContainer);
+      }
+    });
   } else if (currentProject === 'Soon') {
   } else {
     const projectContainer = createProjectContainer(
       taskList.projects.find((project) => project.title === currentProject),
+      'All',
     );
 
     allTasks.appendChild(projectContainer);
