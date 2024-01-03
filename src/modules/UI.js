@@ -2,7 +2,7 @@ import '../style.css';
 import checkmarkIcon from '../images/done.svg';
 import inboxIcon from '../images/inbox.svg';
 import todayIcon from '../images/calendar-day.svg';
-import soonIcon from '../images/calendar-soon.svg';
+import weekIcon from '../images/calendar-week.svg';
 import getTaskList from './taskList';
 import createProject from './project';
 import createTask from './task';
@@ -204,8 +204,8 @@ const createSide = () => {
   const inboxImg = document.createElement('img');
   const today = createProjectButton('Today');
   const todayImg = document.createElement('img');
-  const soon = createProjectButton('Soon');
-  const soonImg = document.createElement('img');
+  const week = createProjectButton('Week');
+  const weekImg = document.createElement('img');
   const projectSection = document.createElement('h1');
   const addProject = document.createElement('button');
   const taskList = getTaskList().taskList;
@@ -217,9 +217,9 @@ const createSide = () => {
   todayImg.src = todayIcon;
   todayImg.alt = 'Today icon';
   today.appendChild(todayImg);
-  soonImg.src = soonIcon;
-  soonImg.alt = 'Soon icon';
-  soon.appendChild(soonImg);
+  weekImg.src = weekIcon;
+  weekImg.alt = 'Week icon';
+  week.appendChild(weekImg);
   projectSection.textContent = 'Projects';
   addProject.classList.add('add-button');
   addProject.textContent = '＋ Add project';
@@ -227,7 +227,7 @@ const createSide = () => {
 
   side.appendChild(inbox);
   side.appendChild(today);
-  side.appendChild(soon);
+  side.appendChild(week);
   side.appendChild(projectSection);
 
   taskList.projects.forEach((project) => {
@@ -337,7 +337,7 @@ const createAllTasksContainer = () => {
         allTasks.appendChild(projectContainer);
       }
     });
-  } else if (currentProject === 'Soon') {
+  } else if (currentProject === 'Week') {
   } else {
     const projectContainer = createProjectContainer(
       taskList.projects.find((project) => project.title === currentProject),
