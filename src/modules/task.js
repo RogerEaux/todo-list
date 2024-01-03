@@ -1,9 +1,19 @@
-const createTask = (title, dueDate) => {
+const createTask = (ID, title, dueDate) => {
+  let taskID = ID;
   let taskTitle = title;
   let taskDueDate = dueDate;
+
   let taskCompleted = false;
 
   return {
+    get ID() {
+      return taskID;
+    },
+
+    set ID(ID) {
+      taskID = ID;
+    },
+
     get title() {
       return taskTitle;
     },

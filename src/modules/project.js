@@ -1,4 +1,5 @@
-const createProject = (title) => {
+const createProject = (ID, title) => {
+  let projectID = ID;
   let projectTitle = title;
   const projectTasks = [];
 
@@ -7,6 +8,14 @@ const createProject = (title) => {
   };
 
   return {
+    get ID() {
+      return projectID;
+    },
+
+    set ID(ID) {
+      projectID = ID;
+    },
+
     get title() {
       return projectTitle;
     },

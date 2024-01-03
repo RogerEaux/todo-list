@@ -2,9 +2,9 @@ import createProject from './project';
 import createTask from './task';
 
 const createTaskList = () => {
-  const taskProjects = [createProject('Personal')];
-  taskProjects[0].addTask(createTask('Pet dog', 'Now'));
-  taskProjects[0].addTask(createTask('Smile', 'Today'));
+  const taskProjects = [createProject('personal', 'Personal')];
+  taskProjects[0].addTask(createTask('personal--pet-dog', 'Pet dog', 'Now'));
+  taskProjects[0].addTask(createTask('personal--smile', 'Smile', 'Today'));
 
   const addProject = (project) => {
     taskProjects.push(project);

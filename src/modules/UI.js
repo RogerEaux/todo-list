@@ -43,9 +43,9 @@ const handleProjectClick = (e) => {
   }
 
   taskList.currentProject = projectTitle;
-  console.log(taskList.currentProject);
   main.insertBefore(createAllTasksContainer(), main.lastChild);
   main.removeChild(main.lastChild);
+  console.log('Second');
 };
 
 const handleAddProject = () => {
@@ -64,7 +64,7 @@ const handleAddProject = () => {
   }
 
   nav.insertBefore(createProjectButton(title), nav.lastChild);
-  taskList.addProject(createProject(title));
+  taskList.addProject(createProject(formatTitle(title), title));
 };
 
 const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
@@ -80,9 +80,10 @@ const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
   taskTitleInput.setAttribute('onfocus', "value=''");
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   document.removeEventListener('click', clickOutsideInput);
+  console.log('First');
 };
 
-const handleEditTaskTitleInput = (e, taskID) => {
+const handleEditTaskTitleInput = (e, taskID, clickOutsideInput) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
@@ -95,17 +96,17 @@ const handleEditTaskTitleInput = (e, taskID) => {
   }
   if (e.keyCode === 13) {
     const taskList = getTaskList().taskList;
-    const allTasksNode = document.querySelector('.all-tasks');
-    const projectEditedNode = document.getElementById(
-      `${taskID.split('--')[0]}`,
-    );
+    const projectID = `${taskID.split('--')[0]}`;
+    const projectEditedNode = document.getElementById(projectID);
     const taskEditedNode = document.getElementById(taskID);
 
-    const projectIndex = Array.from(allTasksNode.children).indexOf(
-      projectEditedNode,
+    const projectIndex = taskList.projects.findIndex(
+      (project) => project.ID === projectID,
     );
-    const taskIndex =
-      Array.from(projectEditedNode.children).indexOf(taskEditedNode) - 1;
+    const taskIndex = taskList.projects[projectIndex].tasks.findIndex(
+      (task) => task.ID === taskID,
+    );
+
     const projectEdited = taskList.projects[projectIndex];
     const taskEdited = projectEdited.tasks[taskIndex];
 
@@ -115,6 +116,7 @@ const handleEditTaskTitleInput = (e, taskID) => {
       return;
     }
 
+    taskEdited.ID = `${projectID}--${formatTitle(taskTitleInput.value)}`;
     taskEdited.title = taskTitleInput.value;
     projectEditedNode.replaceChild(
       createTaskContainer(
@@ -125,19 +127,15 @@ const handleEditTaskTitleInput = (e, taskID) => {
       taskEditedNode,
     );
 
-    document.removeEventListener('click', (e) =>
-      handleClickOutsideInput(e, taskID),
-    );
+    document.removeEventListener('click', clickOutsideInput);
   }
 };
 
-const handleEditTaskTitle = (taskID) => {
+const handleEditTaskTitle = (taskID, clickOutsideInput) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
   );
-  const clickOutsideInput = (e) =>
-    handleClickOutsideInput(e, taskID, clickOutsideInput);
 
   document.addEventListener('click', clickOutsideInput);
 
@@ -160,11 +158,13 @@ const handleAddTask = (project) => {
     title = title.replace('o ', 'oo ');
   }
 
+  const taskID = `${formatTitle(project.title)}--${formatTitle(title)}`;
+
   projectNode.insertBefore(
     createTaskContainer(project.title, title, 'Today'),
     projectNode.lastChild,
   );
-  project.addTask(createTask(title, 'Today'));
+  project.addTask(createTask(taskID, title, 'Today'));
 };
 
 // Create DOM elements
@@ -248,6 +248,8 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   const taskTitle = document.createElement('p');
   const taskDueDate = document.createElement('p');
   const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
+  const clickOutsideInput = (e) =>
+    handleClickOutsideInput(e, taskID, clickOutsideInput);
 
   taskContainer.classList.add('task-container');
   taskContainer.setAttribute('id', taskID);
@@ -260,11 +262,13 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
   taskTitleInput.addEventListener('keydown', (e) =>
-    handleEditTaskTitleInput(e, taskID),
+    handleEditTaskTitleInput(e, taskID, clickOutsideInput),
   );
   taskTitle.textContent = title;
   taskTitle.classList.add('task-title');
-  taskTitle.addEventListener('click', () => handleEditTaskTitle(taskID));
+  taskTitle.addEventListener('click', () =>
+    handleEditTaskTitle(taskID, clickOutsideInput),
+  );
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
 
@@ -311,25 +315,26 @@ const createAllTasksContainer = () => {
   const allTasks = document.createElement('div');
   const currentProject = getTaskList().currentProject;
   const taskList = getTaskList().taskList;
-  const defaultProjects = ['Inbox', 'Today', 'Soon'];
 
-  taskList.projects.forEach((project) => {
-    if (
-      !defaultProjects.includes(currentProject) &&
-      currentProject !== project
-    ) {
-      return;
-    }
+  if (currentProject === 'Inbox') {
+    taskList.projects.forEach((project) => {
+      const projectContainer = createProjectContainer(project);
 
-    const projectContainer = createProjectContainer(project);
+      if (projectContainer.querySelector('.task-container')) {
+        allTasks.appendChild(projectContainer);
+      }
+    });
+  } else if (currentProject === 'Today') {
+  } else if (currentProject === 'Soon') {
+  } else {
+    const projectContainer = createProjectContainer(
+      taskList.projects.find((project) => project.title === currentProject),
+    );
 
-    if (projectContainer.querySelector('.task-container')) {
-      allTasks.appendChild(projectContainer);
-    }
-  });
+    allTasks.appendChild(projectContainer);
+  }
 
   allTasks.classList.add('all-tasks');
-
   return allTasks;
 };
 
