@@ -39,6 +39,23 @@ const validateNewProjectTitle = (taskList, title) => {
   return errorMessage;
 };
 
+const getTaskAndProject = (taskID) => {
+  const taskList = getTaskList().taskList;
+  const projectID = `${taskID.split('--')[0]}`;
+
+  const projectIndex = taskList.projects.findIndex(
+    (project) => project.ID === projectID,
+  );
+  const taskIndex = taskList.projects[projectIndex].tasks.findIndex(
+    (task) => task.ID === taskID,
+  );
+
+  const projectEdited = taskList.projects[projectIndex];
+  const taskEdited = projectEdited.tasks[taskIndex];
+
+  return { projectEdited, taskEdited };
+};
+
 // Handler functions
 
 const handleProjectClick = (e) => {
@@ -107,20 +124,10 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
     taskTitleInput.setAttribute('style', 'visibility:hidden');
   }
   if (e.keyCode === 13) {
-    const taskList = getTaskList().taskList;
     const projectID = `${taskID.split('--')[0]}`;
     const projectEditedNode = document.getElementById(projectID);
     const taskEditedNode = document.getElementById(taskID);
-
-    const projectIndex = taskList.projects.findIndex(
-      (project) => project.ID === projectID,
-    );
-    const taskIndex = taskList.projects[projectIndex].tasks.findIndex(
-      (task) => task.ID === taskID,
-    );
-
-    const projectEdited = taskList.projects[projectIndex];
-    const taskEdited = projectEdited.tasks[taskIndex];
+    const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
     const errorMessage = validateNewTaskTitle(
       projectEdited,
@@ -268,6 +275,17 @@ const handleAddTask = (project) => {
   project.addTask(createTask(taskID, title, 'Today'));
 };
 
+const handleChecboxActive = (e) => {
+  const taskList = getTaskList.taskList;
+  const taskContainer = e.target.previousSibling.parentNode.parentNode;
+  const taskID = taskContainer.getAttribute('id');
+  const projectID = `${taskID.split('--')[0]}`;
+
+  taskContainer.parentNode.removeChild(taskContainer);
+
+  const { projectEdited, taskEdited } = getTaskAndProject(taskID);
+};
+
 // Create DOM elements
 
 const createTop = () => {
@@ -354,6 +372,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   taskCompleted.setAttribute('type', 'checkbox');
   taskCompleted.setAttribute('id', `${taskID}-input-completed`);
   taskLabel.setAttribute('for', `${taskID}-input-completed`);
+  taskLabel.addEventListener('click', (e) => handleChecboxActive(e));
   taskTitleInput.setAttribute('type', 'text');
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
