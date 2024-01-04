@@ -115,14 +115,15 @@ nav > h1 {
   translate: 100%;
 }
 
-.task-container > p,
+.task-container > h2,
 .task-container > input {
   grid-area: title;
   font-size: 1rem;
 }
 
-.task-container p {
+.task-container > h2 {
   cursor: pointer;
+  font-weight: 400;
 }
 
 .task-container .task-due {
