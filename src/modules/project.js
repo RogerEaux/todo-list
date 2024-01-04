@@ -7,6 +7,10 @@ const createProject = (ID, title) => {
     projectTasks.push(task);
   };
 
+  const removeTask = (task) => {
+    projectTasks.splice(projectTasks.indexOf(task), 1);
+  };
+
   return {
     get ID() {
       return projectID;
@@ -29,6 +33,8 @@ const createProject = (ID, title) => {
     },
 
     addTask,
+
+    removeTask,
   };
 };
 

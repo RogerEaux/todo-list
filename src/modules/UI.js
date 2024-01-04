@@ -276,14 +276,12 @@ const handleAddTask = (project) => {
 };
 
 const handleChecboxActive = (e) => {
-  const taskList = getTaskList.taskList;
   const taskContainer = e.target.previousSibling.parentNode.parentNode;
   const taskID = taskContainer.getAttribute('id');
-  const projectID = `${taskID.split('--')[0]}`;
+  const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
   taskContainer.parentNode.removeChild(taskContainer);
-
-  const { projectEdited, taskEdited } = getTaskAndProject(taskID);
+  projectEdited.removeTask(taskEdited);
 };
 
 // Create DOM elements
