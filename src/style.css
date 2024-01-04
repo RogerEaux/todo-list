@@ -54,7 +54,7 @@ body {
   grid-template-columns: 16rem 1fr;
 }
 
-.main > nav {
+nav {
   display: flex;
   flex-direction: column;
   padding: 16px;
@@ -83,13 +83,15 @@ nav > h1 {
 }
 
 .project-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   padding: 16px;
 }
 
-.project-container > h1 {
-  padding: 16px;
+.project-container > h1,
+.project-container > input {
+  grid-area: 1 / 1;
+  margin: 16px;
   font-size: 1.4rem;
 }
 
@@ -102,12 +104,13 @@ nav > h1 {
   padding: 8px;
 }
 
-.task-container .task-title {
+.task-container > p,
+.task-container > input {
   grid-area: title;
   font-size: 1rem;
 }
 
-.task-container p.task-title {
+.task-container p {
   cursor: pointer;
 }
 

@@ -65,13 +65,14 @@ const handleAddProject = () => {
   taskList.addProject(createProject(formatTitle(title), title));
 };
 
-const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
-  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
-  const taskTitleInput = document.querySelector(
-    `#${taskID} > input.task-title`,
-  );
+const handleClickOutsideTaskInput = (e, taskID, clickOutsideInput) => {
+  const taskTitle = document.querySelector(`#${taskID} > p`);
+  const taskTitleInput = document.querySelector(`#${taskID} > input`);
 
-  if (e.target.closest(`#${taskID} > .task-title`)) {
+  if (
+    e.target.closest(`#${taskID} > p`) ||
+    e.target.closest(`#${taskID} > input`)
+  ) {
     return;
   }
   document.removeEventListener('click', clickOutsideInput);
@@ -83,10 +84,8 @@ const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
 };
 
 const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
-  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
-  const taskTitleInput = document.querySelector(
-    `#${taskID} > input.task-title`,
-  );
+  const taskTitle = document.querySelector(`#${taskID} > p`);
+  const taskTitleInput = document.querySelector(`#${taskID} > input`);
 
   if (e.keyCode === 27 || e.keyCode === 13) {
     taskTitle.setAttribute('style', 'visibility:visible');
@@ -131,10 +130,8 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
 };
 
 const handleEditTask = (taskID, clickOutsideInput) => {
-  const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
-  const taskTitleInput = document.querySelector(
-    `#${taskID} > input.task-title`,
-  );
+  const taskTitle = document.querySelector(`#${taskID} > p`);
+  const taskTitleInput = document.querySelector(`#${taskID} > input`);
 
   document.addEventListener('click', clickOutsideInput);
 
@@ -143,9 +140,34 @@ const handleEditTask = (taskID, clickOutsideInput) => {
   taskTitleInput.focus();
 };
 
-const handleEditProjectInput = () => {};
+const handleClickOutsideProjectInput = (e, projectID, clickOutsideInput) => {
+  const projectTitle = document.querySelector(`#${projectID} > h1`);
+  const projectTitleInput = document.querySelector(`#${projectID} > input`);
 
-const handleEditProject = () => {};
+  if (
+    e.target.closest(`#${projectID} > h1`) ||
+    e.target.closest(`#${projectID} > input`)
+  ) {
+    return;
+  }
+  document.removeEventListener('click', clickOutsideInput);
+  if (projectTitle) {
+    projectTitle.setAttribute('style', 'visibility:visible');
+    projectTitleInput.setAttribute('onfocus', "value=''");
+    projectTitleInput.setAttribute('style', 'visibility:hidden');
+  }
+};
+
+const handleEditProject = (projectID, clickOutsideInput) => {
+  const projectTitle = document.querySelector(`#${projectID} > h1`);
+  const projectTitleInput = document.querySelector(`#${projectID} > input`);
+
+  document.addEventListener('click', clickOutsideInput);
+
+  projectTitle.setAttribute('style', 'visibility:hidden');
+  projectTitleInput.setAttribute('style', 'visibility:visible');
+  projectTitleInput.focus();
+};
 
 const handleAddTask = (project) => {
   const projectNode = document.getElementById(formatTitle(project.title));
@@ -248,7 +270,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   const taskDueDate = document.createElement('p');
   const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
   const clickOutsideInput = (e) =>
-    handleClickOutsideInput(e, taskID, clickOutsideInput);
+    handleClickOutsideTaskInput(e, taskID, clickOutsideInput);
 
   taskContainer.classList.add('task-container');
   taskContainer.setAttribute('id', taskID);
@@ -257,14 +279,12 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   taskCompleted.setAttribute('id', `${taskID}-input-completed`);
   taskLabel.setAttribute('for', `${taskID}-input-completed`);
   taskTitleInput.setAttribute('type', 'text');
-  taskTitleInput.classList.add('task-title');
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
   taskTitleInput.addEventListener('keydown', (e) =>
     handleEditTaskInput(e, taskID, clickOutsideInput),
   );
   taskTitle.textContent = title;
-  taskTitle.classList.add('task-title');
   taskTitle.addEventListener('click', () =>
     handleEditTask(taskID, clickOutsideInput),
   );
@@ -288,10 +308,24 @@ const createProjectContainer = (project, dueDate) => {
   const projectTitleInput = document.createElement('input');
   const projectID = formatTitle(project.title);
   const addTask = document.createElement('button');
+  const clickOutsideProjectInput = (e) =>
+    handleClickOutsideProjectInput(e, projectID, clickOutsideProjectInput);
 
   projectContainer.classList.add('project-container');
   projectContainer.setAttribute('id', projectID);
+  projectTitleInput.setAttribute('type', 'text');
+  projectTitleInput.classList.add('project-title');
+  projectTitleInput.setAttribute('style', 'visibility:hidden');
+  projectTitleInput.setAttribute('id', `${projectID}-input-edit-title`);
+  projectTitleInput.addEventListener('keydown', (e) =>
+    handleEditProjectInput(e, projectID, clickOutsideProjectInput),
+  );
   projectTitle.textContent = project.title;
+  projectTitle.addEventListener('click', () =>
+    handleEditProject(projectID, clickOutsideProjectInput),
+  );
+
+  projectContainer.append(projectTitle, projectTitleInput);
 
   project.tasks.forEach((task) => {
     if (
