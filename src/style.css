@@ -2,6 +2,8 @@
   font-family: Helvetica, Arial, sans-serif;
   --gray: #202020;
   --light-gray: #707070;
+  --lapis: #26619c;
+  --peridot: #b4c424;
   --shadow: 0px 0px 8px var(--gray);
 }
 
@@ -133,8 +135,24 @@ nav > h1 {
   }
 }
 
-.fading {
-  animation: 1.5s ease-out 0s 1 taskCompletedTrans;
+.fade-out {
+  animation: 1.25s ease-out 0s 1 taskCompletedTrans;
+}
+
+@keyframes taskCreatedTrans {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: 0.75s ease-in 0s 1 taskCreatedTrans;
 }
 
 .task-container > h2,
@@ -159,8 +177,8 @@ nav > h1 {
 }
 
 .checkbox-container label {
-  background-color: #fff;
-  border: 2px solid violet;
+  background-color: #ffffff;
+  border: 2px solid var(--lapis);
   border-radius: 50%;
   cursor: pointer;
   height: 1.1rem;
@@ -175,8 +193,8 @@ nav > h1 {
 }
 
 .checkbox-container input[type='checkbox']:checked + label {
-  background-color: #66bb6a;
-  border-color: #66bb6a;
+  background-color: var(--peridot);
+  border-color: var(--peridot);
 }
 
 .add-button {

@@ -267,11 +267,10 @@ const handleAddTask = (project) => {
   }
 
   const taskID = `${formatTitle(project.title)}--${formatTitle(title)}`;
+  const newTask = createTaskContainer(project.title, title, 'Today');
+  newTask.classList.add('fade-in');
 
-  projectNode.insertBefore(
-    createTaskContainer(project.title, title, 'Today'),
-    projectNode.lastChild,
-  );
+  projectNode.insertBefore(newTask, projectNode.lastChild);
   project.addTask(createTask(taskID, title, 'Today'));
 };
 
@@ -280,11 +279,12 @@ const handleChecboxActive = (e) => {
   const taskID = taskContainer.getAttribute('id');
   const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
-  taskContainer.classList.add('fading');
+  taskContainer.classList.remove('fade-in');
+  taskContainer.classList.add('fade-out');
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
     projectEdited.removeTask(taskEdited);
-  }, 1000);
+  }, 750);
 };
 
 // Create DOM elements
