@@ -11,7 +11,7 @@ import createTask from './task';
 
 const formatTitle = (title) => title.replaceAll(' ', '-').toLowerCase();
 
-const validateNewTitle = (project, title) => {
+const validateNewTaskTitle = (project, title) => {
   let errorMessage = '';
 
   project.tasks.forEach((task) => {
@@ -19,6 +19,20 @@ const validateNewTitle = (project, title) => {
       errorMessage = 'Task titles must be different';
     } else if (title === '') {
       errorMessage = 'Task must have a title';
+    }
+  });
+
+  return errorMessage;
+};
+
+const validateNewProjectTitle = (taskList, title) => {
+  let errorMessage = '';
+
+  taskList.projects.forEach((project) => {
+    if (formatTitle(title) === formatTitle(project.title)) {
+      errorMessage = 'Project titles must be different';
+    } else if (title === '') {
+      errorMessage = 'Project must have a title';
     }
   });
 
@@ -108,7 +122,10 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
     const projectEdited = taskList.projects[projectIndex];
     const taskEdited = projectEdited.tasks[taskIndex];
 
-    const errorMessage = validateNewTitle(projectEdited, taskTitleInput.value);
+    const errorMessage = validateNewTaskTitle(
+      projectEdited,
+      taskTitleInput.value,
+    );
     if (errorMessage) {
       console.log(errorMessage);
       return;
@@ -155,6 +172,65 @@ const handleClickOutsideProjectInput = (e, projectID, clickOutsideInput) => {
     projectTitle.setAttribute('style', 'visibility:visible');
     projectTitleInput.setAttribute('onfocus', "value=''");
     projectTitleInput.setAttribute('style', 'visibility:hidden');
+  }
+};
+
+const handleEditProjectInput = (e, projectID, clickOutsideInput) => {
+  const projectTitle = document.querySelector(`#${projectID} > h1`);
+  const projectTitleInput = document.querySelector(`#${projectID} > input`);
+
+  if (e.keyCode === 27 || e.keyCode === 13) {
+    projectTitle.setAttribute('style', 'visibility:visible');
+    projectTitleInput.setAttribute('onfocus', "value=''");
+    projectTitleInput.setAttribute('style', 'visibility:hidden');
+  }
+  if (e.keyCode === 13) {
+    const taskList = getTaskList().taskList;
+    const currentProject = getTaskList().currentProject;
+    const allTasks = document.querySelector('.all-tasks');
+    const projectEditedNode = document.getElementById(projectID);
+    const nav = document.querySelector('nav');
+    let dueDate = 'All';
+
+    const projectIndex = taskList.projects.findIndex(
+      (project) => project.ID === projectID,
+    );
+
+    const projectEdited = taskList.projects[projectIndex];
+    const projectButtonEdited = Array.from(nav.childNodes).find(
+      (button) => button.textContent === projectEdited.title,
+    );
+
+    const errorMessage = validateNewProjectTitle(
+      taskList,
+      projectTitleInput.value,
+    );
+    if (errorMessage) {
+      console.log(errorMessage);
+      return;
+    }
+    if (currentProject === 'Today' || currentProject === 'Week') {
+      dueDate = 'Today';
+    }
+
+    projectEdited.tasks.forEach((task) => {
+      task.ID = task.ID.replace(
+        projectID,
+        `${formatTitle(projectTitleInput.value)}`,
+      );
+    });
+    projectEdited.ID = `${formatTitle(projectTitleInput.value)}`;
+    projectEdited.title = projectTitleInput.value;
+    allTasks.replaceChild(
+      createProjectContainer(projectEdited, dueDate),
+      projectEditedNode,
+    );
+    nav.replaceChild(
+      createProjectButton(projectTitleInput.value),
+      projectButtonEdited,
+    );
+
+    document.removeEventListener('click', clickOutsideInput);
   }
 };
 

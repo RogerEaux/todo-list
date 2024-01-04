@@ -95,6 +95,10 @@ nav > h1 {
   font-size: 1.4rem;
 }
 
+.project-container > h1 {
+  cursor: pointer;
+}
+
 .task-container {
   display: grid;
   grid-template:
