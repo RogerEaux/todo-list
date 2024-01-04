@@ -284,7 +284,7 @@ const handleChecboxActive = (e) => {
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
     projectEdited.removeTask(taskEdited);
-  }, 1200);
+  }, 1000);
 };
 
 // Create DOM elements
