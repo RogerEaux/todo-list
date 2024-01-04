@@ -280,8 +280,11 @@ const handleChecboxActive = (e) => {
   const taskID = taskContainer.getAttribute('id');
   const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
-  taskContainer.parentNode.removeChild(taskContainer);
-  projectEdited.removeTask(taskEdited);
+  taskContainer.classList.add('fading');
+  setTimeout(() => {
+    taskContainer.parentNode.removeChild(taskContainer);
+    projectEdited.removeTask(taskEdited);
+  }, 1200);
 };
 
 // Create DOM elements
