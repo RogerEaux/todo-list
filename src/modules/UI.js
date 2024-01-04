@@ -97,11 +97,11 @@ const handleAddProject = () => {
 };
 
 const handleClickOutsideTaskInput = (e, taskID, clickOutsideInput) => {
-  const taskTitle = document.querySelector(`#${taskID} > p`);
+  const taskTitle = document.querySelector(`#${taskID} > h2`);
   const taskTitleInput = document.querySelector(`#${taskID} > input`);
 
   if (
-    e.target.closest(`#${taskID} > p`) ||
+    e.target.closest(`#${taskID} > h2`) ||
     e.target.closest(`#${taskID} > input`)
   ) {
     return;
@@ -115,7 +115,7 @@ const handleClickOutsideTaskInput = (e, taskID, clickOutsideInput) => {
 };
 
 const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
-  const taskTitle = document.querySelector(`#${taskID} > p`);
+  const taskTitle = document.querySelector(`#${taskID} > h2`);
   const taskTitleInput = document.querySelector(`#${taskID} > input`);
 
   if (e.keyCode === 27 || e.keyCode === 13) {
@@ -154,7 +154,7 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
 };
 
 const handleEditTask = (taskID, clickOutsideInput) => {
-  const taskTitle = document.querySelector(`#${taskID} > p`);
+  const taskTitle = document.querySelector(`#${taskID} > h2`);
   const taskTitleInput = document.querySelector(`#${taskID} > input`);
 
   document.addEventListener('click', clickOutsideInput);
@@ -361,7 +361,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   const taskCompleted = document.createElement('input');
   const taskLabel = document.createElement('label');
   const taskTitleInput = document.createElement('input');
-  const taskTitle = document.createElement('p');
+  const taskTitle = document.createElement('h2');
   const taskDueDate = document.createElement('p');
   const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
   const clickOutsideInput = (e) =>
