@@ -43,8 +43,7 @@ const handleProjectClick = (e) => {
   }
 
   taskList.currentProject = projectTitle;
-  main.insertBefore(createAllTasksContainer(), main.lastChild);
-  main.removeChild(main.lastChild);
+  main.replaceChild(createAllTasksContainer(), main.lastChild);
 };
 
 const handleAddProject = () => {
@@ -83,7 +82,7 @@ const handleClickOutsideInput = (e, taskID, clickOutsideInput) => {
   }
 };
 
-const handleEditTaskTitleInput = (e, taskID, clickOutsideInput) => {
+const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
@@ -131,7 +130,7 @@ const handleEditTaskTitleInput = (e, taskID, clickOutsideInput) => {
   }
 };
 
-const handleEditTaskTitle = (taskID, clickOutsideInput) => {
+const handleEditTask = (taskID, clickOutsideInput) => {
   const taskTitle = document.querySelector(`#${taskID} > p.task-title`);
   const taskTitleInput = document.querySelector(
     `#${taskID} > input.task-title`,
@@ -143,6 +142,10 @@ const handleEditTaskTitle = (taskID, clickOutsideInput) => {
   taskTitleInput.setAttribute('style', 'visibility:visible');
   taskTitleInput.focus();
 };
+
+const handleEditProjectInput = () => {};
+
+const handleEditProject = () => {};
 
 const handleAddTask = (project) => {
   const projectNode = document.getElementById(formatTitle(project.title));
@@ -181,8 +184,7 @@ const createTop = () => {
   logo.src = checkmarkIcon;
   logo.alt = 'Two checkmarks';
 
-  logoContainer.appendChild(logo);
-  logoContainer.appendChild(logoTitle);
+  logoContainer.append(logo, logoTitle);
   top.appendChild(logoContainer);
 
   return top;
@@ -225,10 +227,7 @@ const createSide = () => {
   addProject.textContent = '＋ Add project';
   addProject.addEventListener('click', () => handleAddProject());
 
-  side.appendChild(inbox);
-  side.appendChild(today);
-  side.appendChild(week);
-  side.appendChild(projectSection);
+  side.append(inbox, today, week, projectSection);
 
   taskList.projects.forEach((project) => {
     side.appendChild(createProjectButton(project.title));
@@ -262,22 +261,23 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-edit-title`);
   taskTitleInput.addEventListener('keydown', (e) =>
-    handleEditTaskTitleInput(e, taskID, clickOutsideInput),
+    handleEditTaskInput(e, taskID, clickOutsideInput),
   );
   taskTitle.textContent = title;
   taskTitle.classList.add('task-title');
   taskTitle.addEventListener('click', () =>
-    handleEditTaskTitle(taskID, clickOutsideInput),
+    handleEditTask(taskID, clickOutsideInput),
   );
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
 
-  taskCheckboxContainer.appendChild(taskCompleted);
-  taskCheckboxContainer.appendChild(taskLabel);
-  taskContainer.appendChild(taskCheckboxContainer);
-  taskContainer.appendChild(taskTitleInput);
-  taskContainer.appendChild(taskTitle);
-  taskContainer.appendChild(taskDueDate);
+  taskCheckboxContainer.append(taskCompleted, taskLabel);
+  taskContainer.append(
+    taskCheckboxContainer,
+    taskTitleInput,
+    taskTitle,
+    taskDueDate,
+  );
 
   return taskContainer;
 };
@@ -285,13 +285,13 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
 const createProjectContainer = (project, dueDate) => {
   const projectContainer = document.createElement('div');
   const projectTitle = document.createElement('h1');
+  const projectTitleInput = document.createElement('input');
   const projectID = formatTitle(project.title);
   const addTask = document.createElement('button');
 
   projectContainer.classList.add('project-container');
   projectContainer.setAttribute('id', projectID);
   projectTitle.textContent = project.title;
-  projectContainer.appendChild(projectTitle);
 
   project.tasks.forEach((task) => {
     if (
@@ -354,8 +354,7 @@ const createAllTasksContainer = () => {
 const createMain = () => {
   const main = document.createElement('main');
 
-  main.appendChild(createSide());
-  main.appendChild(createAllTasksContainer());
+  main.append(createSide(), createAllTasksContainer());
   main.classList.add('main');
 
   return main;
@@ -375,9 +374,7 @@ const createFooter = () => {
 const createContent = () => {
   const body = document.querySelector('body');
 
-  body.appendChild(createTop());
-  body.appendChild(createMain());
-  body.appendChild(createFooter());
+  body.append(createTop(), createMain(), createFooter());
 };
 
 export default createContent;
