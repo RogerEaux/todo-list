@@ -275,7 +275,20 @@ const handleAddTask = (project) => {
 };
 
 const handleChecboxActive = (e) => {
-  const taskContainer = e.target.previousSibling.parentNode.parentNode;
+  const taskContainer = e.target.parentNode.parentNode;
+  const taskID = taskContainer.getAttribute('id');
+  const { projectEdited, taskEdited } = getTaskAndProject(taskID);
+
+  taskContainer.classList.remove('fade-in');
+  taskContainer.classList.add('fade-out');
+  setTimeout(() => {
+    taskContainer.parentNode.removeChild(taskContainer);
+    projectEdited.removeTask(taskEdited);
+  }, 750);
+};
+
+const handleDeleteProject = (e) => {
+  const taskContainer = e.target.parentNode;
   const taskID = taskContainer.getAttribute('id');
   const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
@@ -362,6 +375,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   const taskLabel = document.createElement('label');
   const taskTitleInput = document.createElement('input');
   const taskTitle = document.createElement('h2');
+  const taskDelete = document.createElement('button');
   const taskDueDate = document.createElement('p');
   const taskID = `${formatTitle(projectTitle)}--${formatTitle(title)}`;
   const clickOutsideInput = (e) =>
@@ -384,6 +398,8 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   taskTitle.addEventListener('click', () =>
     handleEditTask(taskID, clickOutsideInput),
   );
+  taskDelete.textContent = '✖';
+  taskDelete.addEventListener('click', (e) => handleDeleteProject(e));
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
 
@@ -392,6 +408,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
     taskCheckboxContainer,
     taskTitleInput,
     taskTitle,
+    taskDelete,
     taskDueDate,
   );
 
@@ -459,7 +476,7 @@ const createAllTasksContainer = () => {
         allTasks.appendChild(projectContainer);
       }
     });
-  } else if (currentProject === 'Today') {
+  } else if (currentProject === 'Today' || currentProject === 'Week') {
     taskList.projects.forEach((project) => {
       const projectContainer = createProjectContainer(project, 'Today');
 
@@ -467,7 +484,6 @@ const createAllTasksContainer = () => {
         allTasks.appendChild(projectContainer);
       }
     });
-  } else if (currentProject === 'Week') {
   } else {
     const projectContainer = createProjectContainer(
       taskList.projects.find((project) => project.title === currentProject),
