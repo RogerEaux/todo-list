@@ -292,13 +292,13 @@ const handleChecboxActive = (e) => {
 const handleDeleteTask = (e) => {
   const taskContainer = e.target.parentNode;
   const taskID = taskContainer.getAttribute('id');
-  const { projectEdited, taskEdited } = getTaskAndProject(taskID);
+  const { projectEdited, taskDeleted } = getTaskAndProject(taskID);
 
   taskContainer.classList.remove('fade-in');
   taskContainer.classList.add('fade-out-deleted');
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
-    projectEdited.removeTask(taskEdited);
+    projectEdited.removeTask(taskDeleted);
   }, 750);
 };
 
@@ -308,19 +308,25 @@ const handleDeleteProject = (e) => {
   const projectID = formatTitle(projectTitle);
   const nav = document.querySelector('nav');
 
-  const projectEditedNode = document.getElementById(projectID);
+  const projectDeleted = document.getElementById(projectID);
   const projectIndex = taskList.projects.findIndex(
     (project) => project.ID === projectID,
   );
-
-  nav.removeChild(
-    Array.from(nav.childNodes).find(
-      (button) => button.firstChild.textContent === projectTitle,
-    ),
+  const projectButtonDeleted = Array.from(nav.childNodes).find(
+    (button) => button.firstChild.textContent === projectTitle,
   );
-  if (projectEditedNode) {
+
+  projectButtonDeleted.classList.add('fade-out-deleted');
+  setTimeout(() => {
+    nav.removeChild(projectButtonDeleted);
+  }, 750);
+
+  if (projectDeleted) {
     const allTasks = document.querySelector('.all-tasks');
-    allTasks.removeChild(projectEditedNode);
+    projectDeleted.classList.add('fade-out-deleted');
+    setTimeout(() => {
+      allTasks.removeChild(projectDeleted);
+    }, 750);
   }
   taskList.removeProject(taskList.projects[projectIndex]);
   e.stopPropagation();

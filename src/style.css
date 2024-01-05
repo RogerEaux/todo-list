@@ -2,7 +2,7 @@
   font-family: Helvetica, Arial, sans-serif;
   --steven: #f66fb2;
   --garnet: #9a2a2a;
-  --pearl: #eae0c8;
+  --pearl: #6fcfa4;
   --amethyst: #9966cc;
   --bismuth: #762041;
   --lapis: #26619c;
@@ -88,14 +88,18 @@ nav > * {
 .project-button {
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
-  justify-content: left;
+  justify-content: space-between;
   font-size: 1rem;
   gap: 8px;
   border: none;
   border-radius: 5px;
   color: var(--bismuth);
   cursor: pointer;
+}
+
+.project-button.default-project {
+  flex-direction: row-reverse;
+  justify-content: left;
 }
 
 .project-button img {
@@ -165,7 +169,7 @@ nav > h1 {
   animation: 0.75s ease-in 0s 1 taskCreatedTrans;
 }
 
-@keyframes taskDeletedTrans {
+@keyframes deletedTrans {
   0% {
     transform: translateY(0%);
     opacity: 1;
@@ -178,7 +182,7 @@ nav > h1 {
 }
 
 .fade-out-deleted {
-  animation: 1.25s ease-out 0s 1 taskDeletedTrans;
+  animation: 1.25s ease-out 0s 1 deletedTrans;
 }
 
 .task-container > h2,
@@ -192,11 +196,20 @@ nav > h1 {
   font-weight: 400;
 }
 
+.project-button > button,
 .task-container > button {
   cursor: pointer;
   color: var(--ruby);
   border: none;
   font-size: 1rem;
+}
+
+.project-button > button {
+  visibility: hidden;
+}
+
+.project-button:hover > button {
+  visibility: visible;
 }
 
 .task-container.fade-out-deleted > button {
