@@ -1,10 +1,17 @@
+import { compareAsc } from 'date-fns';
+
 const createProject = (ID, title) => {
   let projectID = ID;
   let projectTitle = title;
   const projectTasks = [];
 
+  const sortTasksByDate = () => {
+    projectTasks.sort((a, b) => compareAsc(a.dueDate, b.dueDate));
+  };
+
   const addTask = (task) => {
     projectTasks.push(task);
+    sortTasksByDate();
   };
 
   const removeTask = (task) => {
