@@ -204,14 +204,17 @@ nav > h1 {
   font-size: 1rem;
 }
 
+.task-container > button,
 .project-button > button {
   visibility: hidden;
 }
 
+.task-container:hover > button,
 .project-button:hover > button {
   visibility: visible;
 }
 
+.project-button.fade-out-deleted > button,
 .task-container.fade-out-deleted > button {
   color: var(--sapphire);
 }

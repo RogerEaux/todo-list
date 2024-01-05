@@ -69,7 +69,7 @@ const handleProjectClick = (e) => {
   });
   e.target.classList.add('current-selected-project');
 
-  if (projectTitle === taskList.currentProject && navButtons.length > 4) {
+  if (projectTitle === taskList.currentProject) {
     return;
   }
 
@@ -320,7 +320,6 @@ const handleDeleteProject = (e) => {
   setTimeout(() => {
     nav.removeChild(projectButtonDeleted);
   }, 750);
-
   if (projectDeleted) {
     const allTasks = document.querySelector('.all-tasks');
     projectDeleted.classList.add('fade-out-deleted');
@@ -329,6 +328,15 @@ const handleDeleteProject = (e) => {
     }, 750);
   }
   taskList.removeProject(taskList.projects[projectIndex]);
+
+  if (
+    projectButtonDeleted
+      .getAttribute('class')
+      .includes('current-selected-project')
+  ) {
+    nav.firstChild.click();
+  }
+
   e.stopPropagation();
 };
 
