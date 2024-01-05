@@ -69,7 +69,7 @@ const handleProjectClick = (e) => {
   });
   e.target.classList.add('current-selected-project');
 
-  if (projectTitle === taskList.currentProject) {
+  if (projectTitle === taskList.currentProject && navButtons.length > 4) {
     return;
   }
 
