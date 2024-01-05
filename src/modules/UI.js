@@ -73,8 +73,6 @@ const handleProjectClick = (e) => {
     return;
   }
 
-  console.log(projectTitle);
-
   taskList.currentProject = projectTitle;
   main.replaceChild(createAllTasksContainer(), main.lastChild);
 };
@@ -94,10 +92,10 @@ const handleAddProject = () => {
     title = title.replace('o ', 'oo ');
   }
 
+  taskList.addProject(createProject(formatTitle(title), title));
   const newProjectButton = createProjectButton(title);
   newProjectButton.click();
   nav.insertBefore(newProjectButton, nav.lastChild);
-  taskList.addProject(createProject(formatTitle(title), title));
 };
 
 const handleClickOutsideTaskInput = (e, taskID, clickOutsideInput) => {
