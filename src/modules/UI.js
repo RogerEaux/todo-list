@@ -293,7 +293,7 @@ const handleDeleteProject = (e) => {
   const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
   taskContainer.classList.remove('fade-in');
-  taskContainer.classList.add('fade-out');
+  taskContainer.classList.add('fade-out-deleted');
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
     projectEdited.removeTask(taskEdited);
