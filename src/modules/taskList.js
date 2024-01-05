@@ -1,11 +1,19 @@
+import { format, add } from 'date-fns';
 import createProject from './project';
 import createTask from './task';
 
 const createTaskList = () => {
   const taskProjects = [createProject('personal', 'Personal')];
-  taskProjects[0].addTask(createTask('personal--pet-dog', 'Pet dog', 'Now'));
-  taskProjects[0].addTask(createTask('personal--smile', 'Smile', 'Today'));
-
+  taskProjects[0].addTask(
+    createTask(
+      'personal--pet-dog',
+      'Pet dog',
+      format(add(new Date(), { days: 1 }), 'yyyy-MM-dd'),
+    ),
+  );
+  taskProjects[0].addTask(
+    createTask('personal--smile', 'Smile', format(new Date(), 'yyyy-MM-dd')),
+  );
   const addProject = (project) => {
     taskProjects.push(project);
   };
