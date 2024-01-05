@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/RogerEaux/todo-list/issues"
   },
-  "homepage": "https://github.com/RogerEaux/todo-list#readme"
+  "homepage": "https://github.com/RogerEaux/todo-list#readme",
+  "dependencies": {
+    "date-fns": "^3.1.0"
+  }
 }
