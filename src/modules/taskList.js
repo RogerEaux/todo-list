@@ -10,12 +10,18 @@ const createTaskList = () => {
     taskProjects.push(project);
   };
 
+  const removeProject = (project) => {
+    taskProjects.splice(taskProjects.indexOf(project), 1);
+  };
+
   return {
     get projects() {
       return taskProjects;
     },
 
     addProject,
+
+    removeProject,
   };
 };
 

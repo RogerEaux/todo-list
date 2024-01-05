@@ -59,9 +59,9 @@ const getTaskAndProject = (taskID) => {
 // Handler functions
 
 const handleProjectClick = (e) => {
-  const navButtons = document.querySelectorAll('nav button');
+  const navButtons = document.querySelectorAll('nav > button');
   const taskList = getTaskList();
-  const projectTitle = e.target.textContent;
+  const projectTitle = e.target.firstChild.textContent;
   const main = document.querySelector('main');
 
   navButtons.forEach((button) => {
@@ -72,6 +72,8 @@ const handleProjectClick = (e) => {
   if (projectTitle === taskList.currentProject) {
     return;
   }
+
+  console.log(projectTitle);
 
   taskList.currentProject = projectTitle;
   main.replaceChild(createAllTasksContainer(), main.lastChild);
@@ -92,7 +94,9 @@ const handleAddProject = () => {
     title = title.replace('o ', 'oo ');
   }
 
-  nav.insertBefore(createProjectButton(title), nav.lastChild);
+  const newProjectButton = createProjectButton(title);
+  newProjectButton.click();
+  nav.insertBefore(newProjectButton, nav.lastChild);
   taskList.addProject(createProject(formatTitle(title), title));
 };
 
@@ -205,7 +209,7 @@ const handleEditProjectInput = (e, projectID, clickOutsideInput) => {
 
     const projectEdited = taskList.projects[projectIndex];
     const projectButtonEdited = Array.from(nav.childNodes).find(
-      (button) => button.textContent === projectEdited.title,
+      (button) => button.firstChild.textContent === projectEdited.title,
     );
 
     const errorMessage = validateNewProjectTitle(
@@ -232,10 +236,10 @@ const handleEditProjectInput = (e, projectID, clickOutsideInput) => {
       createProjectContainer(projectEdited, dueDate),
       projectEditedNode,
     );
-    nav.replaceChild(
-      createProjectButton(projectTitleInput.value),
-      projectButtonEdited,
-    );
+
+    const newProjectButton = createProjectButton(projectTitleInput.value);
+    newProjectButton.click();
+    nav.replaceChild(newProjectButton, projectButtonEdited);
 
     document.removeEventListener('click', clickOutsideInput);
   }
@@ -287,7 +291,7 @@ const handleChecboxActive = (e) => {
   }, 750);
 };
 
-const handleDeleteProject = (e) => {
+const handleDeleteTask = (e) => {
   const taskContainer = e.target.parentNode;
   const taskID = taskContainer.getAttribute('id');
   const { projectEdited, taskEdited } = getTaskAndProject(taskID);
@@ -298,6 +302,30 @@ const handleDeleteProject = (e) => {
     taskContainer.parentNode.removeChild(taskContainer);
     projectEdited.removeTask(taskEdited);
   }, 750);
+};
+
+const handleDeleteProject = (e) => {
+  const taskList = getTaskList().taskList;
+  const projectTitle = e.target.parentNode.firstChild.textContent;
+  const projectID = formatTitle(projectTitle);
+  const nav = document.querySelector('nav');
+
+  const projectEditedNode = document.getElementById(projectID);
+  const projectIndex = taskList.projects.findIndex(
+    (project) => project.ID === projectID,
+  );
+
+  nav.removeChild(
+    Array.from(nav.childNodes).find(
+      (button) => button.firstChild.textContent === projectTitle,
+    ),
+  );
+  if (projectEditedNode) {
+    const allTasks = document.querySelector('.all-tasks');
+    allTasks.removeChild(projectEditedNode);
+  }
+  taskList.removeProject(taskList.projects[projectIndex]);
+  e.stopPropagation();
 };
 
 // Create DOM elements
@@ -321,37 +349,51 @@ const createTop = () => {
 };
 
 const createProjectButton = (title) => {
-  const button = document.createElement('button');
+  const projectButton = document.createElement('button');
+  const projectDelete = document.createElement('button');
 
-  button.textContent = title;
-  button.classList.add('project-button');
-  button.addEventListener('click', (e) => handleProjectClick(e));
+  projectDelete.textContent = '✖';
+  projectDelete.addEventListener('click', (e) => handleDeleteProject(e));
+  projectButton.textContent = title;
+  projectButton.classList.add('project-button');
+  projectButton.appendChild(projectDelete);
+  projectButton.addEventListener('click', (e) => handleProjectClick(e));
 
-  return button;
+  return projectButton;
 };
 
-const createSide = () => {
-  const side = document.createElement('nav');
+const createDefaultProjects = () => {
   const inbox = createProjectButton('Inbox');
   const inboxImg = document.createElement('img');
   const today = createProjectButton('Today');
   const todayImg = document.createElement('img');
   const week = createProjectButton('Week');
   const weekImg = document.createElement('img');
+
+  inboxImg.src = inboxIcon;
+  inbox.classList.add('default-project');
+  inbox.classList.add('current-selected-project');
+  inbox.removeChild(inbox.lastChild);
+  inbox.appendChild(inboxImg);
+  todayImg.src = todayIcon;
+  today.classList.add('default-project');
+  today.removeChild(today.lastChild);
+  today.appendChild(todayImg);
+  weekImg.src = weekIcon;
+  week.classList.add('default-project');
+  week.removeChild(week.lastChild);
+  week.appendChild(weekImg);
+
+  return { inbox, today, week };
+};
+
+const createSide = () => {
+  const side = document.createElement('nav');
   const projectSection = document.createElement('h1');
   const addProject = document.createElement('button');
   const taskList = getTaskList().taskList;
+  const { inbox, today, week } = createDefaultProjects();
 
-  inboxImg.src = inboxIcon;
-  inboxImg.alt = 'Inbox icon';
-  inbox.classList.add('current-selected-project');
-  inbox.appendChild(inboxImg);
-  todayImg.src = todayIcon;
-  todayImg.alt = 'Today icon';
-  today.appendChild(todayImg);
-  weekImg.src = weekIcon;
-  weekImg.alt = 'Week icon';
-  week.appendChild(weekImg);
   projectSection.textContent = 'Projects';
   addProject.classList.add('add-button');
   addProject.textContent = '＋ Add project';
@@ -399,7 +441,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
     handleEditTask(taskID, clickOutsideInput),
   );
   taskDelete.textContent = '✖';
-  taskDelete.addEventListener('click', (e) => handleDeleteProject(e));
+  taskDelete.addEventListener('click', (e) => handleDeleteTask(e));
   taskDueDate.textContent = dueDate;
   taskDueDate.classList.add('task-due');
 
