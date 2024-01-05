@@ -1,10 +1,15 @@
 :root {
   font-family: Helvetica, Arial, sans-serif;
-  --gray: #202020;
-  --light-gray: #707070;
+  --bismuth: #762041;
   --lapis: #26619c;
   --peridot: #b4c424;
-  --shadow: 0px 0px 8px var(--gray);
+  --ruby: #ae001a;
+  --sapphire: #568cf5;
+  --steven: #f66fb2;
+  --pearl: #eae0c8;
+  --amethyst: #9966cc;
+  --garnet: #9a2a2a;
+  --shadow: 0px 0px 8px var(--bismuth);
 }
 
 * {
@@ -89,8 +94,13 @@ nav > * {
   gap: 8px;
   border: none;
   border-radius: 5px;
-  color: var(--gray);
+  color: var(--bismuth);
   cursor: pointer;
+}
+
+.project-button img {
+  width: auto;
+  height: 1.5rem;
 }
 
 nav > h1 {
@@ -117,8 +127,8 @@ nav > h1 {
 .task-container {
   display: grid;
   grid-template:
-    'input title' 1fr
-    'none due' 1fr / 1.5rem 1fr;
+    'input title delete' 1fr
+    '. due .' 1fr / 1.5rem 1fr 1rem;
   align-items: center;
   padding: 8px;
 }
@@ -166,6 +176,17 @@ nav > h1 {
   font-weight: 400;
 }
 
+.task-container > button {
+  cursor: pointer;
+  color: var(--ruby);
+  border: none;
+  font-size: 1rem;
+}
+
+.task-container > button:active {
+  color: var(--sapphire);
+}
+
 .task-container .task-due {
   grid-area: due;
   font-size: 0.7rem;
@@ -203,7 +224,7 @@ nav > h1 {
   border: none;
   border-radius: 5px;
   padding: 8px;
-  color: var(--light-gray);
+  color: var(--bismuth);
   cursor: pointer;
 }
 
@@ -216,11 +237,6 @@ nav > h1 {
 .project-button:active,
 .main .current-selected-project {
   filter: brightness(80%);
-}
-
-.project-button img {
-  width: auto;
-  height: 1.5rem;
 }
 
 .footer {
