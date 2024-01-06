@@ -1,5 +1,5 @@
 import '../style.css';
-import { format } from 'date-fns';
+import { format, compareDesc, add } from 'date-fns';
 import checkmarkIcon from '../images/done.svg';
 import inboxIcon from '../images/inbox.svg';
 import todayIcon from '../images/calendar-day.svg';
@@ -40,7 +40,17 @@ const validateProjectTitle = (taskList, title) => {
   return errorMessage;
 };
 
-const validateDate = (date) => (!date ? 'Date is not valid' : '');
+const validateDate = (date) => {
+  let errorMessage = '';
+
+  if (!date) {
+    errorMessage = 'Date is not valid';
+  } else if (compareDesc(new Date(), date) === -1) {
+    errorMessage = "Date can't be before today";
+  }
+
+  return errorMessage;
+};
 
 const getTaskAndProject = (taskID) => {
   const taskList = getTaskList().taskList;
@@ -59,6 +69,19 @@ const getTaskAndProject = (taskID) => {
   return { projectEdited, taskEdited };
 };
 
+const refreshAllTasks = () => {
+  const inbox = document.querySelector('nav').firstChild;
+  const currentProject = document.querySelector('.current-project');
+
+  if (inbox === currentProject) {
+    inbox.nextSibling.click();
+  } else {
+    inbox.click();
+  }
+
+  currentProject.click();
+};
+
 // Handler functions
 
 const handleProjectClick = (e) => {
@@ -68,9 +91,9 @@ const handleProjectClick = (e) => {
   const main = document.querySelector('main');
 
   navButtons.forEach((button) => {
-    button.classList.remove('current-selected-project');
+    button.classList.remove('current-project');
   });
-  e.target.classList.add('current-selected-project');
+  e.target.classList.add('current-project');
 
   if (projectTitle === taskList.currentProject) {
     return;
@@ -328,11 +351,7 @@ const handleDeleteProject = (e) => {
   }
   taskList.removeProject(taskList.projects[projectIndex]);
 
-  if (
-    projectButtonDeleted
-      .getAttribute('class')
-      .includes('current-selected-project')
-  ) {
+  if (projectButtonDeleted.getAttribute('class').includes('current-project')) {
     nav.firstChild.click();
   }
 
@@ -341,7 +360,7 @@ const handleDeleteProject = (e) => {
 
 const handleEditDate = (e) => {
   const taskID = e.target.parentNode.getAttribute('id');
-  const { taskEdited } = getTaskAndProject(taskID);
+  const { projectEdited, taskEdited } = getTaskAndProject(taskID);
   const errorMessage = validateDate(e.target.value);
 
   if (errorMessage) {
@@ -350,6 +369,8 @@ const handleEditDate = (e) => {
   }
 
   taskEdited.dueDate = e.target.value;
+  projectEdited.sortTasksByDate();
+  refreshAllTasks();
 };
 
 // Create DOM elements
@@ -396,7 +417,7 @@ const createDefaultProjects = () => {
 
   inboxImg.src = inboxIcon;
   inbox.classList.add('default-project');
-  inbox.classList.add('current-selected-project');
+  inbox.classList.add('current-project');
   inbox.removeChild(inbox.lastChild);
   inbox.appendChild(inboxImg);
   todayImg.src = todayIcon;
@@ -512,6 +533,8 @@ const createProjectContainer = (project, dueDate) => {
     if (
       (dueDate === 'Today' &&
         task.dueDate === format(new Date(), 'yyyy-MM-dd')) ||
+      (dueDate === 'Week' &&
+        compareDesc(task.dueDate, add(new Date(), { days: 6 })) === 1) ||
       dueDate === 'All'
     ) {
       const taskContainer = createTaskContainer(
@@ -545,9 +568,17 @@ const createAllTasksContainer = () => {
         allTasks.appendChild(projectContainer);
       }
     });
-  } else if (currentProject === 'Today' || currentProject === 'Week') {
+  } else if (currentProject === 'Today') {
     taskList.projects.forEach((project) => {
       const projectContainer = createProjectContainer(project, 'Today');
+
+      if (projectContainer.querySelector('.task-container')) {
+        allTasks.appendChild(projectContainer);
+      }
+    });
+  } else if (currentProject === 'Week') {
+    taskList.projects.forEach((project) => {
+      const projectContainer = createProjectContainer(project, 'Week');
 
       if (projectContainer.querySelector('.task-container')) {
         allTasks.appendChild(projectContainer);
