@@ -130,6 +130,8 @@ nav > h1 {
   border-radius: 5px;
 }
 
+.task-container > input[type='date']:focus,
+.task-container > input[type='text']:focus,
 .project-container > input[type='text']:focus {
   outline: none;
   border: 3px solid transparent;
@@ -172,15 +174,9 @@ nav > h1 {
   font-size: 1rem;
 }
 
-.task-container > input[type='text'] {
-  outline: none;
+.task-container > input[type='date']:focus,
+.task-container > input[type='text']:focus {
   border: 2px solid transparent;
-  border-radius: 5px;
-  background: linear-gradient(white, white), var(--diamonds);
-  background-size: 200% 200%;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  animation: borderGradient 2s linear infinite;
 }
 
 .task-container > h2 {
@@ -213,8 +209,10 @@ nav > h1 {
 
 .task-container > input[type='date'] {
   grid-area: due;
+  font-family: inherit;
   font-size: 0.7rem;
   width: fit-content;
+  border: none;
 }
 
 .checkbox-container {
@@ -260,7 +258,7 @@ nav > h1 {
 
 .add-button:active,
 .project-button:active,
-.main .current-selected-project {
+.main .current-project {
   filter: brightness(80%);
 }
 
