@@ -9,6 +9,14 @@
   --peridot: #b4c424;
   --ruby: #ae001a;
   --sapphire: #568cf5;
+  --diamonds: linear-gradient(
+    90deg,
+    white,
+    yellow 25%,
+    blue 50%,
+    var(--steven) 75%,
+    white
+  );
   --shadow: 0px 0px 8px var(--bismuth);
 }
 
@@ -82,7 +90,7 @@ nav > * {
 }
 
 .all-tasks {
-  animation: 0.5s ease-out 0s 1 allTasksTrans;
+  animation: allTasksTrans 0.5s ease-out 1;
 }
 
 .project-button {
@@ -118,10 +126,37 @@ nav > h1 {
 }
 
 .project-container > h1,
-.project-container > input {
+.project-container > input[type='text'] {
+  align-self: center;
   grid-area: 1 / 1;
+  height: fit-content;
   margin: 16px 8px;
   font-size: 1.4rem;
+}
+
+.project-container > input[type='text'] {
+  padding: 4px;
+  border-radius: 5px;
+}
+
+@keyframes borderGradient {
+  0% {
+    background-position-x: 200%;
+  }
+  100% {
+    background-position-x: -200%;
+  }
+}
+
+.project-container > input[type='text']:focus {
+  outline: none;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background: linear-gradient(white, white), var(--diamonds);
+  background-size: 200% 200%;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: borderGradient 4.2s linear infinite;
 }
 
 .project-container > h1 {
@@ -150,7 +185,7 @@ nav > h1 {
 }
 
 .fade-out {
-  animation: 1.25s ease-out 0s 1 taskCompletedTrans;
+  animation: taskCompletedTrans 1.25s ease-out 1;
 }
 
 @keyframes taskCreatedTrans {
@@ -166,7 +201,7 @@ nav > h1 {
 }
 
 .fade-in {
-  animation: 0.75s ease-in 0s 1 taskCreatedTrans;
+  animation: taskCreatedTrans 0.75s ease-in 1;
 }
 
 @keyframes deletedTrans {
@@ -182,11 +217,11 @@ nav > h1 {
 }
 
 .fade-out-deleted {
-  animation: 1.25s ease-out 0s 1 deletedTrans;
+  animation: deletedTrans 1.25s ease-out 1;
 }
 
 .task-container > h2,
-.task-container > input {
+.task-container > input[type='text'] {
   grid-area: title;
   font-size: 1rem;
 }
@@ -219,9 +254,10 @@ nav > h1 {
   color: var(--sapphire);
 }
 
-.task-container .task-due {
+.task-container > input[type='date'] {
   grid-area: due;
   font-size: 0.7rem;
+  width: fit-content;
 }
 
 .checkbox-container {
