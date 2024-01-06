@@ -12,7 +12,7 @@ import createTask from './task';
 
 const formatTitle = (title) => title.replaceAll(' ', '-').toLowerCase();
 
-const validateNewTaskTitle = (project, title) => {
+const validateTaskTitle = (project, title) => {
   let errorMessage = '';
 
   project.tasks.forEach((task) => {
@@ -26,7 +26,7 @@ const validateNewTaskTitle = (project, title) => {
   return errorMessage;
 };
 
-const validateNewProjectTitle = (taskList, title) => {
+const validateProjectTitle = (taskList, title) => {
   let errorMessage = '';
 
   taskList.projects.forEach((project) => {
@@ -39,6 +39,8 @@ const validateNewProjectTitle = (taskList, title) => {
 
   return errorMessage;
 };
+
+const validateDate = (date) => (!date ? 'Date is not valid' : '');
 
 const getTaskAndProject = (taskID) => {
   const taskList = getTaskList().taskList;
@@ -132,10 +134,7 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
     const taskEditedNode = document.getElementById(taskID);
     const { projectEdited, taskEdited } = getTaskAndProject(taskID);
 
-    const errorMessage = validateNewTaskTitle(
-      projectEdited,
-      taskTitleInput.value,
-    );
+    const errorMessage = validateTaskTitle(projectEdited, taskTitleInput.value);
     if (errorMessage) {
       console.log(errorMessage);
       return;
@@ -209,7 +208,7 @@ const handleEditProjectInput = (e, projectID, clickOutsideInput) => {
       (button) => button.firstChild.textContent === projectEdited.title,
     );
 
-    const errorMessage = validateNewProjectTitle(
+    const errorMessage = validateProjectTitle(
       taskList,
       projectTitleInput.value,
     );
@@ -343,6 +342,12 @@ const handleDeleteProject = (e) => {
 const handleEditDate = (e) => {
   const taskID = e.target.parentNode.getAttribute('id');
   const { taskEdited } = getTaskAndProject(taskID);
+  const errorMessage = validateDate(e.target.value);
+
+  if (errorMessage) {
+    console.log(errorMessage);
+    return;
+  }
 
   taskEdited.dueDate = e.target.value;
 };
