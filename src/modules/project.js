@@ -42,6 +42,8 @@ const createProject = (ID, title) => {
     addTask,
 
     removeTask,
+
+    sortTasksByDate,
   };
 };
 
