@@ -45,7 +45,7 @@ const validateDate = (date) => {
 
   if (!date) {
     errorMessage = 'Date is not valid';
-  } else if (compareDesc(new Date(), date) === -1) {
+  } else if (compareDesc(format(new Date(), 'yyyy-MM-dd'), date) === -1) {
     errorMessage = "Date can't be before today";
   }
 
@@ -534,7 +534,10 @@ const createProjectContainer = (project, dueDate) => {
       (dueDate === 'Today' &&
         task.dueDate === format(new Date(), 'yyyy-MM-dd')) ||
       (dueDate === 'Week' &&
-        compareDesc(task.dueDate, add(new Date(), { days: 6 })) === 1) ||
+        compareDesc(
+          task.dueDate,
+          add(format(new Date(), 'yyyy-MM-dd'), { days: 6 }),
+        ) === 1) ||
       dueDate === 'All'
     ) {
       const taskContainer = createTaskContainer(
