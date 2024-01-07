@@ -20,6 +20,7 @@
     var(--steven) 75%,
     var(--white)
   );
+  --spinel: #490530;
   --shadow: 0px 0px 8px var(--bismuth);
 }
 
@@ -150,7 +151,7 @@ nav > h1 {
   font-size: 0.8rem;
   font-weight: 700;
   padding: 8px;
-  color: var(--ruby);
+  color: var(--spinel);
   animation: errorMessage 3s ease 1;
 }
 
@@ -223,7 +224,20 @@ nav > h1 {
   font-family: inherit;
   font-size: 0.7rem;
   width: fit-content;
+  cursor: pointer;
   border: none;
+}
+
+.task-container > p {
+  grid-area: alert;
+  justify-self: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--sapphire);
+}
+
+.task-container > p:hover {
+  color: var(--ruby);
 }
 
 .checkbox-container {

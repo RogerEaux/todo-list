@@ -548,6 +548,12 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
     taskDueDate,
   );
 
+  if (compareDesc(format(new Date(), 'yyyy-MM-dd'), dueDate) === -1) {
+    const taskAlert = document.createElement('p');
+    taskAlert.textContent = '!';
+    taskContainer.appendChild(taskAlert);
+  }
+
   return taskContainer;
 };
 
