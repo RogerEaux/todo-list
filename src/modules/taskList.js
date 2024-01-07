@@ -3,17 +3,8 @@ import createProject from './project';
 import createTask from './task';
 
 const createTaskList = () => {
-  const taskProjects = [createProject('personal', 'Personal')];
-  taskProjects[0].addTask(
-    createTask(
-      'personal--pet-dog',
-      'Pet dog',
-      format(add(new Date(), { days: 1 }), 'yyyy-MM-dd'),
-    ),
-  );
-  taskProjects[0].addTask(
-    createTask('personal--smile', 'Smile', format(new Date(), 'yyyy-MM-dd')),
-  );
+  const taskProjects = [];
+
   const addProject = (project) => {
     taskProjects.push(project);
   };
@@ -33,8 +24,45 @@ const createTaskList = () => {
   };
 };
 
-const taskList = createTaskList();
+let taskList;
 let currentProject = 'Inbox';
+
+const createDefaultTaskList = () => {
+  const defaultTaskList = createTaskList();
+
+  defaultTaskList.addProject(createProject('personal', 'Personal'));
+  defaultTaskList.projects[0].addTask(
+    createTask(
+      'personal--pet-dog',
+      'Pet dog',
+      format(add(new Date(), { days: 1 }), 'yyyy-MM-dd'),
+    ),
+  );
+  defaultTaskList.projects[0].addTask(
+    createTask('personal--smile', 'Smile', format(new Date(), 'yyyy-MM-dd')),
+  );
+
+  return defaultTaskList;
+};
+
+const createStoredTaskList = () => {
+  const newTaskList = createTaskList();
+  const storedTaskList = JSON.parse(localStorage.getItem('taskList'));
+
+  return newTaskList;
+};
+
+const checkLocalStorage = () => {
+  if (!localStorage.taskList) {
+    taskList = createDefaultTaskList();
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+  } else {
+    console.log('nEw');
+    taskList = createStoredTaskList();
+  }
+};
+
+checkLocalStorage();
 
 const getTaskList = () => ({
   get taskList() {
