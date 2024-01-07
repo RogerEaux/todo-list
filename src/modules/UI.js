@@ -118,7 +118,10 @@ const handleAddProject = () => {
     title = title.replace('o ', 'oo ');
   }
 
-  taskList.addProject(createProject(formatTitle(title), title));
+  const newProject = createProject(formatTitle(title), title);
+
+  taskList.addProject(newProject);
+  localStorage.setItem(formatTitle(title), JSON.stringify(newProject));
   const newProjectButton = createProjectButton(title);
   newProjectButton.click();
   nav.insertBefore(newProjectButton, nav.lastChild);
@@ -165,6 +168,9 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
 
     taskEdited.ID = `${projectID}--${formatTitle(taskTitleInput.value)}`;
     taskEdited.title = taskTitleInput.value;
+    localStorage.removeItem(taskID);
+    localStorage.setItem(taskEdited.ID, JSON.stringify(taskEdited));
+
     projectEditedNode.replaceChild(
       createTaskContainer(
         projectEdited.title,
@@ -241,13 +247,20 @@ const handleEditProjectInput = (e, projectID, clickOutsideInput) => {
     }
 
     projectEdited.tasks.forEach((task) => {
+      localStorage.removeItem(task.ID);
       task.ID = task.ID.replace(
         projectID,
         `${formatTitle(projectTitleInput.value)}`,
       );
+      localStorage.setItem(task.ID, JSON.stringify(task));
     });
+
     projectEdited.ID = `${formatTitle(projectTitleInput.value)}`;
     projectEdited.title = projectTitleInput.value;
+    localStorage.removeItem(projectID);
+    const projectEditedTemp = JSON.parse(JSON.stringify(projectEdited));
+    projectEditedTemp.tasks = [];
+    localStorage.setItem(projectEdited.ID, JSON.stringify(projectEditedTemp));
     allTasks.replaceChild(
       createProjectContainer(projectEdited, 'All'),
       projectEditedNode,
@@ -293,12 +306,18 @@ const handleAddTask = (project) => {
     format(new Date(), 'yyyy-MM-dd'),
   );
   newTask.classList.add('fade-in');
-
   projectNode.insertBefore(newTask, projectNode.lastChild);
-  project.addTask(createTask(taskID, title, format(new Date(), 'yyyy-MM-dd')));
+
+  const newTaskItem = createTask(
+    taskID,
+    title,
+    format(new Date(), 'yyyy-MM-dd'),
+  );
+  project.addTask(newTaskItem);
+  localStorage.setItem(taskID, JSON.stringify(newTaskItem));
 };
 
-const handleChecboxActive = (e) => {
+const handleCompleteTask = (e) => {
   const taskContainer = e.target.parentNode.parentNode;
   const taskID = taskContainer.getAttribute('id');
   const { projectEdited, taskEdited } = getTaskAndProject(taskID);
@@ -308,6 +327,7 @@ const handleChecboxActive = (e) => {
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
     projectEdited.removeTask(taskEdited);
+    localStorage.removeItem(taskID);
   }, 750);
 };
 
@@ -321,6 +341,7 @@ const handleDeleteTask = (e) => {
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
     projectEdited.removeTask(taskDeleted);
+    localStorage.removeItem(taskID);
   }, 750);
 };
 
@@ -349,7 +370,11 @@ const handleDeleteProject = (e) => {
       allTasks.removeChild(projectDeleted);
     }, 750);
   }
+  taskList.projects[projectIndex].tasks.forEach((task) => {
+    localStorage.removeItem(task.ID);
+  });
   taskList.removeProject(taskList.projects[projectIndex]);
+  localStorage.removeItem(projectID);
 
   if (projectButtonDeleted.getAttribute('class').includes('current-project')) {
     nav.firstChild.click();
@@ -369,6 +394,8 @@ const handleEditDate = (e) => {
   }
 
   taskEdited.dueDate = e.target.value;
+  localStorage.removeItem(taskID);
+  localStorage.setItem(taskEdited.ID, JSON.stringify(taskEdited));
   projectEdited.sortTasksByDate();
   refreshAllTasks();
 };
@@ -474,7 +501,7 @@ const createTaskContainer = (projectTitle, title, dueDate) => {
   taskCompleted.setAttribute('type', 'checkbox');
   taskCompleted.setAttribute('id', `${taskID}-input-completed`);
   taskLabel.setAttribute('for', `${taskID}-input-completed`);
-  taskLabel.addEventListener('click', (e) => handleChecboxActive(e));
+  taskLabel.addEventListener('click', (e) => handleCompleteTask(e));
   taskTitleInput.setAttribute('type', 'text');
   taskTitleInput.setAttribute('style', 'visibility:hidden');
   taskTitleInput.setAttribute('id', `${taskID}-input-title`);
