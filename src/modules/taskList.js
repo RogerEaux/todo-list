@@ -43,11 +43,11 @@ const createDefaultTaskList = () => {
     createTask('personal--smile', 'Smile', format(new Date(), 'yyyy-MM-dd')),
   );
   localStorage.setItem(
-    'personal--pet-dog',
+    'personal--smile',
     JSON.stringify(defaultTaskList.projects[0].tasks[0]),
   );
   localStorage.setItem(
-    'personal--smile',
+    'personal--pet-dog',
     JSON.stringify(defaultTaskList.projects[0].tasks[1]),
   );
 
@@ -57,8 +57,6 @@ const createDefaultTaskList = () => {
 const createStoredTaskList = () => {
   const newTaskList = createTaskList();
   const allItemsStored = [];
-
-  console.log(localStorage);
 
   for (let i = 0; i < localStorage.length; i += 1) {
     const key = localStorage.key(i);
@@ -72,18 +70,18 @@ const createStoredTaskList = () => {
     .filter((item) => item.includes('--'))
     .map((item) => JSON.parse(item));
 
-  console.log(projectItems);
-  console.log(taskItems);
-
   projectItems.forEach((project, projectIndex) => {
     newTaskList.addProject(createProject(project.ID, project.title));
-    taskItems
-      .filter((task) => task.ID.includes(project.ID))
-      .forEach((task) => {
+    const filteredTaskItems = taskItems.filter((task) =>
+      task.ID.includes(`${project.ID}--`),
+    );
+    if (filteredTaskItems) {
+      filteredTaskItems.forEach((task) => {
         newTaskList.projects[projectIndex].addTask(
           createTask(task.ID, task.title, task.dueDate),
         );
       });
+    }
   });
 
   return newTaskList;
