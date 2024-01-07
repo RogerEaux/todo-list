@@ -34,8 +34,8 @@ const createDefaultTaskList = () => {
   localStorage.setItem('personal', JSON.stringify(defaultTaskList.projects[0]));
   defaultTaskList.projects[0].addTask(
     createTask(
-      'personal--pet-dog',
-      'Pet dog',
+      'personal--pet-pet',
+      'Pet pet',
       format(add(new Date(), { days: 1 }), 'yyyy-MM-dd'),
     ),
   );
