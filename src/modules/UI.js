@@ -664,11 +664,13 @@ const createMain = () => {
 
 const createFooter = () => {
   const footer = document.createElement('footer');
-  const para = document.createElement('p');
+  const copy = document.createElement('p');
+  const name = document.createElement('p');
 
   footer.classList.add('footer');
-  para.textContent = 'Copyright © 2023 RogerEaux';
-  footer.appendChild(para);
+  copy.textContent = 'Copyright © 2023 ';
+  name.textContent = 'RogerEaux';
+  footer.append(copy, name);
 
   return footer;
 };
