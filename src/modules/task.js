@@ -3,8 +3,6 @@ const createTask = (ID, title, dueDate) => {
   let taskTitle = title;
   let taskDueDate = dueDate;
 
-  let taskCompleted = false;
-
   return {
     get ID() {
       return taskID;
@@ -28,14 +26,6 @@ const createTask = (ID, title, dueDate) => {
 
     set dueDate(dueDate) {
       taskDueDate = dueDate;
-    },
-
-    get completed() {
-      return taskCompleted;
-    },
-
-    set completed(completed) {
-      taskCompleted = completed;
     },
   };
 };
