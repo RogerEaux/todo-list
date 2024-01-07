@@ -429,7 +429,7 @@ const createTop = () => {
   const logoContainer = document.createElement('div');
 
   top.classList.add('header');
-  logoTitle.textContent = 'Do a thing';
+  logoTitle.textContent = 'Do Things';
   logoContainer.classList.add('logo-container');
   logo.src = checkmarkIcon;
   logo.alt = 'Two checkmarks';
