@@ -61,21 +61,21 @@ body {
   display: flex;
   padding: 16px;
   justify-self: center;
-}
-
-.logo-container > * {
-  align-self: center;
+  align-items: center;
 }
 
 .logo-container img {
   padding: 8px;
   width: auto;
-  height: 75px;
+  height: 80px;
 }
 
 .logo-container p {
-  padding: 16px;
-  font-size: 1.4rem;
+  padding: 8px;
+  font-size: 1rem;
+  font-family: CrystalUniverse;
+  line-height: 2rem;
+  color: var(--steven);
 }
 
 .main {
@@ -94,27 +94,41 @@ nav {
 
 nav > * {
   padding: 8px;
+  font-family: Crewniverse;
+  color: var(--bismuth);
 }
 
-.all-tasks {
-  animation: allTasks 0.5s ease-out 1;
+nav :first-child {
+  color: var(--garnet);
+}
+
+nav :nth-child(2) {
+  color: var(--pearl);
+}
+
+nav :nth-child(3) {
+  color: var(--amethyst);
+}
+
+nav > h1 {
+  font-size: 0.8rem;
 }
 
 .project-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1rem;
-  gap: 8px;
+  font-size: 0.7rem;
   border: none;
   border-radius: 5px;
-  color: var(--bismuth);
   cursor: pointer;
 }
 
 .project-button.default-project {
   flex-direction: row-reverse;
   justify-content: left;
+  gap: 8px;
+  font-family: CrystalUniverse;
 }
 
 .project-button img {
@@ -122,14 +136,15 @@ nav > * {
   height: 1.5rem;
 }
 
-nav > h1 {
-  font-size: 1.2rem;
+.all-tasks {
+  animation: allTasks 0.5s ease-out 1;
 }
 
 .project-container {
   display: grid;
   grid-template-columns: 1fr;
-  padding: 16px;
+  padding: 8px;
+  color: var(--bismuth);
 }
 
 .project-container > h1,
@@ -160,6 +175,8 @@ nav > h1 {
 
 .project-container > h1 {
   cursor: pointer;
+  font-family: Crewniverse;
+  font-size: 1rem;
 }
 
 .project-container > p {
@@ -208,7 +225,7 @@ nav > h1 {
 
 .task-container > h2 {
   cursor: pointer;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .project-button > button,
@@ -289,6 +306,7 @@ nav > h1 {
   padding: 8px;
   color: var(--bismuth);
   cursor: pointer;
+  font-family: inherit;
 }
 
 .add-button:hover,
@@ -304,8 +322,17 @@ nav > h1 {
 
 .footer {
   display: flex;
-  padding: 16px;
   justify-content: center;
+  gap: 8px;
+  font-family: Crewniverse;
+  font-size: 1rem;
+  padding: 16px;
+  color: var(--steven);
+}
+
+.footer :last-child {
+  font-family: CrystalUniverse;
+  font-size: 0.8rem;
 }
 
 @keyframes allTasks {
