@@ -1,5 +1,20 @@
+@font-face {
+  font-family: CrystalUniverse;
+  src: url(./fonts/CrystalUniverse.ttf) format(truetype);
+}
+
+@font-face {
+  font-family: Crewniverse;
+  src: url(./fonts/Crewniverse.ttf) format(truetype);
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url(./fonts/Montserrat.ttf) format(truetype);
+}
+
 :root {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica, Arial, sans-serif;
   --steven: #f66fb2;
   --garnet: #9a2a2a;
   --pearl: #6fcfa4;
