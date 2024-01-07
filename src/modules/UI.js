@@ -162,7 +162,13 @@ const handleEditTaskInput = (e, taskID, clickOutsideInput) => {
 
     const errorMessage = validateTaskTitle(projectEdited, taskTitleInput.value);
     if (errorMessage) {
-      console.log(errorMessage);
+      const error = document.createElement('p');
+
+      error.textContent = `* ${errorMessage}`;
+      const errorNode = projectEditedNode.appendChild(error);
+      setTimeout(() => {
+        projectEditedNode.removeChild(errorNode);
+      }, 3000);
       return;
     }
 
@@ -242,7 +248,13 @@ const handleEditProjectInput = (e, projectID, clickOutsideInput) => {
       projectTitleInput.value,
     );
     if (errorMessage) {
-      console.log(errorMessage);
+      const error = document.createElement('p');
+
+      error.textContent = `* ${errorMessage}`;
+      const errorNode = projectEditedNode.appendChild(error);
+      setTimeout(() => {
+        projectEditedNode.removeChild(errorNode);
+      }, 3000);
       return;
     }
 
@@ -389,7 +401,15 @@ const handleEditDate = (e) => {
   const errorMessage = validateDate(e.target.value);
 
   if (errorMessage) {
-    console.log(errorMessage);
+    const error = document.createElement('p');
+
+    error.textContent = `* ${errorMessage}`;
+    const projectEditedNode = e.target.parentNode.parentNode;
+    const errorNode = projectEditedNode.appendChild(error);
+    setTimeout(() => {
+      projectEditedNode.removeChild(errorNode);
+    }, 3000);
+
     return;
   }
 

@@ -81,7 +81,7 @@ nav > * {
 }
 
 .all-tasks {
-  animation: allTasksTrans 0.5s ease-out 1;
+  animation: allTasks 0.5s ease-out 1;
 }
 
 .project-button {
@@ -127,7 +127,6 @@ nav > h1 {
 
 .project-container > input[type='text'] {
   padding: 4px;
-  border-radius: 5px;
 }
 
 .task-container > input[type='date']:focus,
@@ -147,31 +146,43 @@ nav > h1 {
   cursor: pointer;
 }
 
+.project-container > p {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px;
+  color: var(--ruby);
+  animation: errorMessage 3s ease 1;
+}
+
 .task-container {
   display: grid;
   grid-template:
     'input title delete' 1fr
-    '. due .' 1fr / 1.5rem 1fr 1rem;
+    'alert due .' 1fr / 1.5rem 1fr 1rem;
   align-items: center;
   padding: 8px;
 }
 
 .fade-out {
-  animation: taskCompletedTrans 1.25s ease-out 1;
+  animation: taskCompleted 1.25s ease-out 1;
 }
 
 .fade-in {
-  animation: taskCreatedTrans 0.75s ease-in 1;
+  animation: taskCreated 0.75s ease-in 1;
 }
 
 .fade-out-deleted {
-  animation: deletedTrans 1.25s ease-out 1;
+  animation: deleted 1.25s ease-out 1;
 }
 
 .task-container > h2,
 .task-container > input[type='text'] {
   grid-area: title;
   font-size: 1rem;
+}
+
+.task-container > input[type='text'] {
+  padding: 2px;
 }
 
 .task-container > input[type='date']:focus,
@@ -268,7 +279,7 @@ nav > h1 {
   justify-content: center;
 }
 
-@keyframes allTasksTrans {
+@keyframes allTasks {
   0% {
     transform: translateY(60%);
     opacity: 0;
@@ -280,7 +291,7 @@ nav > h1 {
   }
 }
 
-@keyframes taskCreatedTrans {
+@keyframes taskCreated {
   0% {
     transform: translateX(-100%);
     opacity: 0;
@@ -292,7 +303,7 @@ nav > h1 {
   }
 }
 
-@keyframes taskCompletedTrans {
+@keyframes taskCompleted {
   0% {
     transform: translateX(0%);
     opacity: 1;
@@ -304,7 +315,7 @@ nav > h1 {
   }
 }
 
-@keyframes deletedTrans {
+@keyframes deleted {
   0% {
     transform: translateY(0%);
     opacity: 1;
@@ -319,5 +330,15 @@ nav > h1 {
 @keyframes borderGradient {
   100% {
     background-position-x: -200%;
+  }
+}
+
+@keyframes errorMessage {
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
