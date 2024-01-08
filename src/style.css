@@ -24,6 +24,7 @@
   --peridot: #b4c424;
   --ruby: #ae001a;
   --sapphire: #568cf5;
+  --jasper: #df9150;
   --white: #e5e4e4;
   --yellow: #ffd249;
   --blue: #0145b2;
@@ -36,7 +37,9 @@
     var(--white)
   );
   --spinel: #490530;
-  --shadow: 0px 0px 8px var(--bismuth);
+  --rose: #fdf9f0;
+  --evil-rose: #02060f;
+  --shadow: 0px 0px 8px var(--steven);
 }
 
 * {
@@ -50,6 +53,7 @@ body {
   height: 100vh;
   flex-direction: column;
   display: flex;
+  background-color: var(--rose);
 }
 
 header {
@@ -80,6 +84,7 @@ header button img,
 }
 
 header button {
+  background-color: inherit;
   border: none;
   visibility: hidden;
 }
@@ -94,6 +99,7 @@ main {
   display: grid;
   grid-template-columns: 16rem 1fr;
   z-index: 0;
+  padding: 3px 0;
 }
 
 nav {
@@ -101,7 +107,7 @@ nav {
   flex-direction: column;
   padding: 16px;
   gap: 8px;
-  background-color: var(--white);
+  box-shadow: var(--shadow);
 }
 
 nav > * {
@@ -123,6 +129,7 @@ nav :nth-child(3) {
 }
 
 nav > h1 {
+  color: var(--jasper);
   font-size: 0.8rem;
 }
 
@@ -156,6 +163,7 @@ nav > h1 {
 
 .all-tasks {
   animation: allTasks 0.5s ease-out 1;
+  padding-left: 16px;
 }
 
 .project-container {
@@ -197,14 +205,13 @@ nav > h1 {
   font-size: 1rem;
 }
 
-.project-container input[type='text'] + button {
-  align-self: center;
-  justify-self: end;
-  grid-area: 1 / 1;
-  position: relative;
-  height: min-content;
-  width: min-content;
-  visibility: hidden;
+.project-container input[type='text'] + button,
+.project-button > button,
+.task-container > button {
+  cursor: pointer;
+  color: var(--ruby);
+  border: none;
+  font-size: 1rem;
 }
 
 .project-container input[type='text'] + button {
@@ -212,9 +219,11 @@ nav > h1 {
   justify-self: end;
   grid-area: 1 / 1;
   position: relative;
+  font-size: 1.4rem;
   height: min-content;
   width: min-content;
   visibility: hidden;
+  background-color: inherit;
 }
 
 .project-container:hover input[type='text'] + button {
@@ -270,17 +279,9 @@ nav > h1 {
   font-weight: 500;
 }
 
-.project-container input[type='text'] + button,
-.project-button > button,
-.task-container > button {
-  cursor: pointer;
-  color: var(--ruby);
-  border: none;
-  font-size: 1rem;
-}
-
 .task-container > button {
   visibility: hidden;
+  background-color: inherit;
 }
 
 .task-container:hover > button,
@@ -301,6 +302,8 @@ nav > h1 {
   width: fit-content;
   cursor: pointer;
   border: none;
+  background-color: inherit;
+  color: inherit;
 }
 
 .task-container > p {
@@ -321,7 +324,7 @@ nav > h1 {
 }
 
 .checkbox-container label {
-  background-color: #ffffff;
+  background-color: inherit;
   border: 2px solid var(--lapis);
   border-radius: 50%;
   cursor: pointer;
@@ -447,7 +450,7 @@ footer :last-child {
 @media (max-width: 600px) {
   header {
     z-index: 2;
-    background-color: #ffffff;
+    background-color: var(--rose);
   }
 
   header button {
@@ -455,8 +458,8 @@ footer :last-child {
   }
 
   main {
+    width: 100%;
     grid-template: 'main' 1fr / 1fr;
-    margin-left: 16px;
   }
 
   main > * {
@@ -464,11 +467,14 @@ footer :last-child {
   }
 
   nav {
-    margin: 4px;
-    background-color: #ffffff;
+    margin: 2px 8px;
     visibility: hidden;
     height: min-content;
-    border-bottom: 2px solid var(--bismuth);
+    background-color: var(--rose);
+  }
+
+  .all-tasks {
+    padding: 16px;
   }
 
   .shown {
