@@ -4,6 +4,7 @@ import checkmarkIcon from '../images/done.svg';
 import inboxIcon from '../images/inbox.svg';
 import todayIcon from '../images/calendar-day.svg';
 import weekIcon from '../images/calendar-week.svg';
+import navIcon from '../images/nav-icon.svg';
 import getTaskList from './taskList';
 import createProject from './project';
 import createTask from './task';
@@ -420,6 +421,21 @@ const handleEditDate = (e) => {
   refreshAllTasks();
 };
 
+const handleCloseNavTab = () => {};
+
+const handleOpenNavTab = () => {
+  const nav = document.querySelector('nav');
+
+  nav.classList.toggle('shown');
+  nav.addEventListener(
+    'click',
+    () => {
+      nav.classList.toggle('shown');
+    },
+    { once: true },
+  );
+};
+
 // Create DOM elements
 
 const createTop = () => {
@@ -427,15 +443,19 @@ const createTop = () => {
   const logo = document.createElement('img');
   const logoTitle = document.createElement('p');
   const logoContainer = document.createElement('div');
+  const navTab = document.createElement('button');
+  const navImg = document.createElement('img');
 
-  top.classList.add('header');
   logoTitle.textContent = 'Do Things';
   logoContainer.classList.add('logo-container');
   logo.src = checkmarkIcon;
   logo.alt = 'Two checkmarks';
+  navTab.addEventListener('click', handleOpenNavTab);
+  navImg.src = navIcon;
 
   logoContainer.append(logo, logoTitle);
-  top.appendChild(logoContainer);
+  navTab.appendChild(navImg);
+  top.append(logoContainer, navTab);
 
   return top;
 };
@@ -657,7 +677,6 @@ const createMain = () => {
   const main = document.createElement('main');
 
   main.append(createSide(), createAllTasksContainer());
-  main.classList.add('main');
 
   return main;
 };
@@ -667,7 +686,6 @@ const createFooter = () => {
   const copy = document.createElement('p');
   const name = document.createElement('p');
 
-  footer.classList.add('footer');
   copy.textContent = 'Copyright © 2023 ';
   name.textContent = 'RogerEaux';
   footer.append(copy, name);

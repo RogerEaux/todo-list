@@ -51,7 +51,7 @@ body {
   display: flex;
 }
 
-.header {
+header {
   display: grid;
   grid-template-columns: 16rem 1fr;
   box-shadow: var(--shadow);
@@ -63,10 +63,9 @@ body {
   justify-self: center;
   align-items: center;
 }
-
+header button img,
 .logo-container img {
   padding: 8px;
-  width: auto;
   height: 80px;
 }
 
@@ -78,7 +77,16 @@ body {
   color: var(--steven);
 }
 
-.main {
+header button {
+  border: none;
+  visibility: hidden;
+}
+
+header button img {
+  height: 70px;
+}
+
+main {
   width: 80%;
   flex: 1;
   display: grid;
@@ -316,11 +324,11 @@ nav > h1 {
 
 .add-button:active,
 .project-button:active,
-.main .current-project {
+main .current-project {
   filter: brightness(80%);
 }
 
-.footer {
+footer {
   display: flex;
   justify-content: center;
   gap: 8px;
@@ -328,9 +336,10 @@ nav > h1 {
   font-size: 1rem;
   padding: 16px;
   color: var(--steven);
+  box-shadow: var(--shadow);
 }
 
-.footer :last-child {
+footer :last-child {
   font-family: CrystalUniverse;
   font-size: 0.8rem;
 }
@@ -396,5 +405,65 @@ nav > h1 {
 
   100% {
     opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    z-index: 2;
+    background-color: #ffffff;
+  }
+
+  header button {
+    visibility: visible;
+  }
+
+  main {
+    grid-template: 'main' 1fr / 1fr;
+    margin-left: 16px;
+  }
+
+  main > * {
+    grid-area: main;
+  }
+
+  nav {
+    z-index: 1;
+    margin: 4px;
+    background-color: #ffffff;
+    visibility: hidden;
+    height: min-content;
+    border-bottom: 2px solid var(--bismuth);
+  }
+
+  .shown {
+    visibility: visible;
+    animation: openNavTab 0.75s ease 1;
+  }
+
+  .task-container > button {
+    visibility: visible;
+  }
+
+  .project-button:hover > button {
+    visibility: hidden;
+  }
+
+  .all-tasks {
+    z-index: 0;
+  }
+
+  footer {
+    font-size: 0.7rem;
+  }
+
+  @keyframes openNavTab {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(0%);
+    }
   }
 }
