@@ -20,6 +20,7 @@
   --pearl: #6fcfa4;
   --amethyst: #9966cc;
   --bismuth: #762041;
+  --evil-bismuth: #89dfbe;
   --lapis: #26619c;
   --peridot: #b4c424;
   --ruby: #ae001a;
@@ -54,6 +55,40 @@ body {
   flex-direction: column;
   display: flex;
   background-color: var(--rose);
+  color: var(--bismuth);
+}
+
+body.dark {
+  background-color: var(--evil-rose);
+  color: var(--evil-bismuth);
+}
+
+body.dark input[type='text']:focus,
+body.dark input[type='date']:focus {
+  background: linear-gradient(var(--evil-rose), var(--evil-rose)),
+    var(--diamonds);
+  background-size: 200% 200%;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+body.dark input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+body.dark .project-button {
+  background-color: var(--evil-rose);
+}
+
+body.dark .project-button:hover,
+body.dark .add-button:hover {
+  filter: brightness(250%);
+}
+
+body.dark .add-button:active,
+body.dark .project-button:active,
+body.dark main .project-button.current-project {
+  filter: brightness(300%);
 }
 
 header {
@@ -83,14 +118,25 @@ header button img,
   color: var(--steven);
 }
 
+.tabs {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 8px 16px 8px 0;
+}
+
 header button {
   background-color: inherit;
   border: none;
+  cursor: pointer;
+}
+
+header button:first-child {
   visibility: hidden;
 }
 
 header button img {
-  height: 66px;
+  height: 60px;
 }
 
 main {
@@ -113,7 +159,7 @@ nav {
 nav > * {
   padding: 8px;
   font-family: Crewniverse;
-  color: var(--bismuth);
+  color: inherit;
 }
 
 nav :first-child {
@@ -141,7 +187,7 @@ nav > h1 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: inherit;
+  background-color: var(--rose);
 }
 
 .project-button.default-project {
@@ -170,7 +216,7 @@ nav > h1 {
   display: grid;
   grid-template-columns: 1fr;
   padding: 8px;
-  color: var(--bismuth);
+  color: inherit;
 }
 
 .project-container > h1,
@@ -178,8 +224,8 @@ nav > h1 {
   align-self: center;
   grid-area: 1 / 1;
   height: fit-content;
-  margin: 16px 8px;
-  font-size: 1.4rem;
+  margin: 16px 24px 16px 8px;
+  font-size: 1rem;
 }
 
 .project-container > input[type='text'] {
@@ -192,7 +238,7 @@ nav > h1 {
   outline: none;
   border: 3px solid transparent;
   border-radius: 5px;
-  background: linear-gradient(white, white), var(--diamonds);
+  background: linear-gradient(var(--rose), var(--rose)), var(--diamonds);
   background-size: 200% 200%;
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -202,7 +248,6 @@ nav > h1 {
 .project-container > h1 {
   cursor: pointer;
   font-family: Crewniverse;
-  font-size: 1rem;
 }
 
 .project-container input[type='text'] + button,
@@ -350,7 +395,7 @@ nav > h1 {
   border: none;
   border-radius: 5px;
   padding: 8px;
-  color: var(--bismuth);
+  color: inherit;
   cursor: pointer;
   font-family: inherit;
   background-color: inherit;
@@ -363,7 +408,7 @@ nav > h1 {
 
 .add-button:active,
 .project-button:active,
-main .current-project {
+main .project-button.current-project {
   filter: brightness(80%);
 }
 
@@ -448,12 +493,27 @@ footer :last-child {
 }
 
 @media (max-width: 600px) {
+  body.dark nav,
+  body.dark header {
+    background-color: var(--evil-rose);
+  }
+
   header {
+    grid-template-columns: 12rem 1fr;
     z-index: 2;
     background-color: var(--rose);
   }
 
-  header button {
+  .logo-container img {
+    height: 70px;
+  }
+
+  .logo-container p {
+    font-size: 0.9rem;
+    line-height: 1.8rem;
+  }
+
+  header button:first-child {
     visibility: visible;
   }
 

@@ -5,6 +5,7 @@ import inboxIcon from '../images/inbox.svg';
 import todayIcon from '../images/calendar-day.svg';
 import weekIcon from '../images/calendar-week.svg';
 import navIcon from '../images/nav-icon.svg';
+import themeIcon from '../images/theme-icon.svg';
 import getTaskList from './taskList';
 import createProject from './project';
 import createTask from './task';
@@ -434,6 +435,12 @@ const handleOpenNavTab = () => {
   );
 };
 
+const handleChangeTheme = () => {
+  const body = document.querySelector('body');
+
+  body.classList.toggle('dark');
+};
+
 // Create DOM elements
 
 const createTop = () => {
@@ -441,19 +448,27 @@ const createTop = () => {
   const logo = document.createElement('img');
   const logoTitle = document.createElement('p');
   const logoContainer = document.createElement('div');
+  const tabs = document.createElement('div');
   const navTab = document.createElement('button');
   const navImg = document.createElement('img');
+  const themeTab = document.createElement('button');
+  const themeImg = document.createElement('img');
 
   logoTitle.textContent = 'Do Things';
   logoContainer.classList.add('logo-container');
   logo.src = checkmarkIcon;
   logo.alt = 'Two checkmarks';
+  tabs.classList.add('tabs');
   navTab.addEventListener('click', handleOpenNavTab);
   navImg.src = navIcon;
+  themeTab.addEventListener('click', handleChangeTheme);
+  themeImg.src = themeIcon;
 
   logoContainer.append(logo, logoTitle);
   navTab.appendChild(navImg);
-  top.append(logoContainer, navTab);
+  themeTab.appendChild(themeImg);
+  tabs.append(navTab, themeTab);
+  top.append(logoContainer, tabs);
 
   return top;
 };
