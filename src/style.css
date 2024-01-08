@@ -235,6 +235,7 @@ nav > h1 {
 .task-container > input[type='date']:focus,
 .task-container > input[type='text']:focus,
 .project-container > input[type='text']:focus {
+  font-family: inherit;
   outline: none;
   border: 3px solid transparent;
   border-radius: 5px;
@@ -242,6 +243,7 @@ nav > h1 {
   background-size: 200% 200%;
   background-origin: border-box;
   background-clip: padding-box, border-box;
+  color: inherit;
   animation: borderGradient 2s linear infinite;
 }
 
