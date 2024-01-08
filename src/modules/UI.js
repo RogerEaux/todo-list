@@ -337,10 +337,10 @@ const handleCompleteTask = (e) => {
 
   taskContainer.classList.remove('fade-in');
   taskContainer.classList.add('fade-out');
+  projectEdited.removeTask(taskEdited);
+  localStorage.removeItem(taskID);
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
-    projectEdited.removeTask(taskEdited);
-    localStorage.removeItem(taskID);
   }, 750);
 };
 
@@ -351,10 +351,10 @@ const handleDeleteTask = (e) => {
 
   taskContainer.classList.remove('fade-in');
   taskContainer.classList.add('fade-out-deleted');
+  projectEdited.removeTask(taskDeleted);
+  localStorage.removeItem(taskID);
   setTimeout(() => {
     taskContainer.parentNode.removeChild(taskContainer);
-    projectEdited.removeTask(taskDeleted);
-    localStorage.removeItem(taskID);
   }, 750);
 };
 
@@ -420,8 +420,6 @@ const handleEditDate = (e) => {
   projectEdited.sortTasksByDate();
   refreshAllTasks();
 };
-
-const handleCloseNavTab = () => {};
 
 const handleOpenNavTab = () => {
   const nav = document.querySelector('nav');
@@ -581,6 +579,7 @@ const createProjectContainer = (project, dueDate) => {
   const projectContainer = document.createElement('div');
   const projectTitle = document.createElement('h1');
   const projectTitleInput = document.createElement('input');
+  const projectDelete = document.createElement('button');
   const projectID = formatTitle(project.title);
   const addTask = document.createElement('button');
   const clickOutsideProjectInput = (e) =>
@@ -599,8 +598,10 @@ const createProjectContainer = (project, dueDate) => {
   projectTitle.addEventListener('click', () =>
     handleEditProject(projectID, clickOutsideProjectInput),
   );
+  projectDelete.textContent = '✖';
+  projectDelete.addEventListener('click', (e) => handleDeleteProject(e));
 
-  projectContainer.append(projectTitle, projectTitleInput);
+  projectContainer.append(projectTitle, projectTitleInput, projectDelete);
 
   project.tasks.forEach((task) => {
     if (

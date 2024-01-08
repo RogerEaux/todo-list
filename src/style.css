@@ -43,6 +43,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  z-index: 1;
 }
 
 body {
@@ -63,6 +64,7 @@ header {
   justify-self: center;
   align-items: center;
 }
+
 header button img,
 .logo-container img {
   padding: 8px;
@@ -83,7 +85,7 @@ header button {
 }
 
 header button img {
-  height: 70px;
+  height: 66px;
 }
 
 main {
@@ -91,6 +93,7 @@ main {
   flex: 1;
   display: grid;
   grid-template-columns: 16rem 1fr;
+  z-index: 0;
 }
 
 nav {
@@ -98,6 +101,7 @@ nav {
   flex-direction: column;
   padding: 16px;
   gap: 8px;
+  background-color: var(--white);
 }
 
 nav > * {
@@ -130,6 +134,7 @@ nav > h1 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background-color: inherit;
 }
 
 .project-button.default-project {
@@ -142,6 +147,11 @@ nav > h1 {
 .project-button img {
   width: auto;
   height: 1.5rem;
+}
+
+.project-button > button {
+  visibility: hidden;
+  background-color: inherit;
 }
 
 .all-tasks {
@@ -185,6 +195,30 @@ nav > h1 {
   cursor: pointer;
   font-family: Crewniverse;
   font-size: 1rem;
+}
+
+.project-container input[type='text'] + button {
+  align-self: center;
+  justify-self: end;
+  grid-area: 1 / 1;
+  position: relative;
+  height: min-content;
+  width: min-content;
+  visibility: hidden;
+}
+
+.project-container input[type='text'] + button {
+  align-self: center;
+  justify-self: end;
+  grid-area: 1 / 1;
+  position: relative;
+  height: min-content;
+  width: min-content;
+  visibility: hidden;
+}
+
+.project-container:hover input[type='text'] + button {
+  visibility: visible;
 }
 
 .project-container > p {
@@ -236,6 +270,7 @@ nav > h1 {
   font-weight: 500;
 }
 
+.project-container input[type='text'] + button,
 .project-button > button,
 .task-container > button {
   cursor: pointer;
@@ -244,8 +279,7 @@ nav > h1 {
   font-size: 1rem;
 }
 
-.task-container > button,
-.project-button > button {
+.task-container > button {
   visibility: hidden;
 }
 
@@ -254,6 +288,7 @@ nav > h1 {
   visibility: visible;
 }
 
+.project-container.fade-out-deleted input[type='text'] + button,
 .project-button.fade-out-deleted > button,
 .task-container.fade-out-deleted > button {
   color: var(--sapphire);
@@ -315,6 +350,7 @@ nav > h1 {
   color: var(--bismuth);
   cursor: pointer;
   font-family: inherit;
+  background-color: inherit;
 }
 
 .add-button:hover,
@@ -358,7 +394,7 @@ footer :last-child {
 
 @keyframes taskCreated {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(100%);
     opacity: 0;
   }
 
@@ -428,7 +464,6 @@ footer :last-child {
   }
 
   nav {
-    z-index: 1;
     margin: 4px;
     background-color: #ffffff;
     visibility: hidden;
@@ -441,6 +476,7 @@ footer :last-child {
     animation: openNavTab 0.75s ease 1;
   }
 
+  .project-container input[type='text'] + button,
   .task-container > button {
     visibility: visible;
   }
