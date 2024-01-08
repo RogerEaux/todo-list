@@ -47,7 +47,7 @@ const createDefaultTaskList = () => {
     JSON.stringify(defaultTaskList.projects[0].tasks[0]),
   );
   localStorage.setItem(
-    'personal--pet-dog',
+    'personal--pet-pet',
     JSON.stringify(defaultTaskList.projects[0].tasks[1]),
   );
 
